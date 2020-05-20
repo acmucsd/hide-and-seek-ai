@@ -2,7 +2,7 @@ import { DIRECTION } from "..";
 import { GameMap } from "../Map";
 
 export abstract class Unit {
-  public type = -1;
+  public type = -1; // same as team, HIDER or SEEKER
   constructor(public x: number, public y: number, public id: number) {
 
   }

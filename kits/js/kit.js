@@ -81,8 +81,8 @@ class Agent {
     let meta = (await this.getLine()).nextIntArr();
     this.round = 0;
     this.id = meta[0];
-    this.team = meta[1]; // equals SEEKER of HIDER
-    console.error('ID:',this.id, 'TEAM', this.team)
+    this.team = meta[1]; // equals SEEKER=3 of HIDER=2
+
     // get unit ids
     let unitIDs = (await this.getLine()).nextIntArr();
     this.units = unitIDs;
@@ -97,8 +97,6 @@ class Agent {
       
       this.map.push(line);
     }
-    fs.writeFileSync(`./${this.team}_log.txt`, JSON.stringify(this.map) + '\n');
-    fs.appendFileSync(`./${this.team}_log.txt`, JSON.stringify(this.units) + '\n');
     
     // console.error(this.map);
   }
@@ -116,8 +114,6 @@ class Agent {
       let line = (await this.getLine()).nextIntArr();
       this.map[i] = line;
     }
-    fs.appendFileSync(`./${this.team}_log.txt`, JSON.stringify(this.map) + '\n');
-    fs.appendFileSync(`./${this.team}_log.txt`, JSON.stringify(this.units) + '\n');
   }
 
   /**
@@ -127,8 +123,8 @@ class Agent {
 
   }
 
-  move(direction) {
-    console.log(direction);
+  move(unitID, direction) {
+    return `${unitID}_${direction}`;
   }
 
   /**

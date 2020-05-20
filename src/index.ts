@@ -6,6 +6,9 @@ import { mapGen } from './Map/gen';
 import colors from 'colors';
 import { deepCopy } from 'dimensions-ai/lib/utils/DeepCopy';
 import { deepMerge } from 'dimensions-ai/lib/utils/DeepMerge';
+import fs from 'fs';
+import { Replay } from './Replay';
+import path from 'path';
 
 export interface GameResults {
   winner: string,
@@ -26,7 +29,8 @@ export interface MatchState {
   /**
    * Ids of the agents that were terminated due to errors such as timeout or too much memory use
    */
-  terminatedIDs: Array<number>
+  terminatedIDs: Array<number>,
+  replay: Replay
 }
 export enum DIRECTION {
   NORTH = 0,
@@ -45,17 +49,33 @@ export const HIDER = 3;
 export interface HideAndSeekConfigs {
   liveView: boolean,
   delay: number,
-  roundLimit: number
+  roundLimit: number,
+  replayDirectory: string,
+  seed: number,
+  mode: GameModes,
+  randomizeSeeker: boolean,
+  parameters: {
+    VISION_RANGE: number
+  }
+}
+export enum GameModes {
+  tag = 'tag',
+  see = 'see'
 }
 export const defaultMatchConfigs: HideAndSeekConfigs = {
   liveView: true,
   delay: 1,
-  roundLimit: 100
+  roundLimit: 100,
+  seed: 30129,
+  replayDirectory: './replays',
+  mode: GameModes.tag,
+  randomizeSeeker: true,
+  parameters: {
+    VISION_RANGE: 48
+  }
 }
 
 export default class HideAndSeekDesign extends Design {
-
-  
 
   getIDs(gamemap: GameMap) {
     let seeker = [];
@@ -72,9 +92,13 @@ export default class HideAndSeekDesign extends Design {
   }
 
   async initialize(match: Match) {
+    
     let width = 16;
     let height = 16;
-    let gamemap = mapGen(width, height);
+    let configs = deepCopy(defaultMatchConfigs);
+    configs = deepMerge(configs, match.configs);
+    match.configs = configs;
+    let gamemap = mapGen(width, height, configs);
     let seekerCount = 1;
     let hiderCount = 1;
     match.state = {
@@ -82,12 +106,18 @@ export default class HideAndSeekDesign extends Design {
       round: 0,
       agentIDToTeam: new Map(),
       ownedIDs: new Map(),
-      terminatedIDs: []
+      terminatedIDs: [],
+      replay: null
     }
-    let configs = deepCopy(defaultMatchConfigs);
-    configs = deepMerge(configs, match.configs);
-    match.configs = configs;
+    
+
+    // create replay directory
+    if (!fs.existsSync(match.configs.replayDirectory)) {
+      fs.mkdirSync(match.configs.replayDirectory);
+    }
+
     let state: MatchState = match.state;
+    state.replay = new Replay(path.join(match.configs.replayDirectory, `${match.name}.json`));
 
     if (match.agents.length != 2) {
       throw new FatalError('Can only have 2 agents!');
@@ -103,10 +133,9 @@ export default class HideAndSeekDesign extends Design {
       }
     });
     // randomly choose seeker or hider team
-    if (Math.random() <= 0.5) {
+    if (!match.configs.randomizeSeeker || Math.random() <= 0.5 ) {
       state.agentIDToTeam.set(0, SEEKER);
       state.agentIDToTeam.set(1, HIDER);
-      
       state.ownedIDs.set(0, seekerSet);
       state.ownedIDs.set(1, hiderSet);
     }
@@ -141,21 +170,22 @@ export default class HideAndSeekDesign extends Design {
 
     // also would be good to send any global information to all agents
     await match.sendAll(`${gamemap.width()},${gamemap.height()}`);
-    for (let i = 0; i < gamemap.height(); i++) {
-      // let cells = [];
-      for (let k = 0; k < match.agents.length; k++) {
-        let agentID = match.agents[k].id;
-        let team = state.agentIDToTeam.get(agentID);
-        let str = gamemap.createMapRowString(i, team);
-        await match.send(str, agentID);
+    let mapStrings = gamemap.createMapStrings(match);
+
+    for (let i = 0; i < mapStrings.length; i++) {
+      let mapString = mapStrings[i];
+      for (let j = 0; j < mapString.length; j++) {
+        await match.send(mapString[j], i);
       }
-      
     }
+
+    state.replay.writeMap(gamemap);
   }
 
   async update(match: Match, commands: Array<MatchEngine.Command> ): Promise<Match.Status> {
     let state: MatchState = match.state
     match.state.round++;
+    this.log.detail('Starting round ' + match.state.round);
     let gamemap = state.gamemap;
 
     // check aliveness
@@ -167,12 +197,13 @@ export default class HideAndSeekDesign extends Design {
     });
     if (terminatedIDs.length > 0) {
       state.terminatedIDs = terminatedIDs;
+      state.replay.writeOut();
       return Match.Status.FINISHED;
     }
 
     // clean up commands
     // parsed commands sorted in order of ID.
-    let parsedCommands: Array<{agentID: number, unitID: number, direction: DIRECTION}> = [];
+    let parsedCommands: Array<{agentID: number, unitID: number, dir: DIRECTION}> = [];
     for (let i = 0; i < commands.length; i++) {
       let command = commands[i];
       let data = command.command.split("_");
@@ -197,16 +228,22 @@ export default class HideAndSeekDesign extends Design {
         }
       }
       // command passed, store it
-      parsedCommands.push({agentID: agentID, unitID: id, direction: dir});
+      parsedCommands.push({agentID: agentID, unitID: id, dir: dir});
     }
 
     parsedCommands.sort((a, b) => a.unitID - b.unitID);
+    let successfulMoves = [];
     parsedCommands.forEach((cmd) => {
-      gamemap.move(gamemap.idMap.get(cmd.unitID), cmd.direction);
+      // if succesfull move, store it
+      if (gamemap.move(gamemap.idMap.get(cmd.unitID), cmd.dir)) {
+        successfulMoves.push(cmd);
+      }
     });
+    state.replay.writeMoves(successfulMoves);
 
 
     if (this.gameOver(match)) {
+      state.replay.writeOut();
       return Match.Status.FINISHED;
     }
     if (match.configs.liveView) {
@@ -232,15 +269,13 @@ export default class HideAndSeekDesign extends Design {
     };
 
     // send map
-    for (let i = 0; i < gamemap.height(); i++) {
-      // let cells = [];
-      for (let k = 0; k < match.agents.length; k++) {
-        let agentID = match.agents[k].id;
-        let team = state.agentIDToTeam.get(agentID);
-        let str = gamemap.createMapRowString(i, team);
-        await match.send(str, agentID);
+    let mapStrings = gamemap.createMapStrings(match);
+
+    for (let i = 0; i < mapStrings.length; i++) {
+      let mapString = mapStrings[i];
+      for (let j = 0; j < mapString.length; j++) {
+        await match.send(mapString[j], i);
       }
-      
     }
     
 
@@ -263,18 +298,18 @@ export default class HideAndSeekDesign extends Design {
     let gamemap: GameMap = state.gamemap;
     console.clear();
     let { seekerIDs, hiderIDs } = this.getIDs(gamemap);
-    console.log(`Match: ${match.name} | Round #: ${state.round}`);
-    console.log('Seeker #: '.cyan, seekerIDs);
-    console.log('Hider #: '.red, hiderIDs);
+    console.log(`Match: ${match.name} | Round # - ${state.round}`);
+    console.log('Seeker # -'.cyan, seekerIDs);
+    console.log('Hider # -'.red, hiderIDs);
     for (let i = 0 ; i < gamemap.height(); i++) {
       let str = [];
       for (let j = 0; j < gamemap.width(); j++) {
         let cell = gamemap.map[i][j];
         if (gamemap.isSeeker(cell)) {
-          str.push(`${cell}`.red);
+          str.push(`${cell}`.cyan);
         }
         else if (gamemap.isHider(cell)) {
-          str.push(`${cell}`.cyan);
+          str.push(`${cell}`.red);
         }
         else if (gamemap.isWall(j, i)) {
           str.push(`▩`.yellow);
