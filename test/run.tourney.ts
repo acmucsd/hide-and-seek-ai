@@ -45,7 +45,9 @@ let tourney = hideandseek.createTournament([], {
   defaultMatchConfigs: {
     randomizeSeeker: true,
     liveView: false,
-    loggingLevel: Dimension.Logger.LEVEL.INFO
+    loggingLevel: Dimension.Logger.LEVEL.INFO,
+    storeReplayDirectory: 'replays'
+    
   },
   agentsPerMatch: [2],
   tournamentConfigs: {

@@ -20,6 +20,7 @@ export interface GameResults {
   hider: string,
   seekerID: number,
   hiderID: number,
+  replayFile: string
 }
 export interface MatchState {
   gamemap: GameMap,
@@ -422,8 +423,10 @@ export default class HideAndSeekDesign extends Design {
       hider: "",
       seekerID: -1,
       hiderID: -1,
+      replayFile: ""
     }
     let state: MatchState = match.state;
+    result.replayFile = state.replay.path;
     // store who is seeker or hider
     let a0team = state.agentIDToTeam.get(0);
     if (a0team === SEEKER) {
