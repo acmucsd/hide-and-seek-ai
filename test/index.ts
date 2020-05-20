@@ -3,9 +3,9 @@ import { create, Logger } from 'dimensions-ai';
 
 let hideandseekdesign = new HideAndSeekDesign('HideAndSeek!', {
   engineOptions: {
-    noStdErr: true,
+    noStdErr: false,
     timeout: {
-      max: 1000
+      max: 2000
     }
   }
 });
@@ -30,7 +30,7 @@ hideandseek.runMatch(botlist, {
   delay: 0.2,
   randomizeSeeker: true,
   liveView: true,
-  seed: 300
+  seed: 5113
 }).then((res) => {
   console.log(res);
 });

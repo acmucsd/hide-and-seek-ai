@@ -4,6 +4,7 @@ import { Seeker } from './Seeker';
 import { Hider } from './Hider';
 import { mapGen } from './Map/gen';
 import colors from 'colors';
+import seedrandom from 'seedrandom';
 import { deepCopy } from 'dimensions-ai/lib/utils/DeepCopy';
 import { deepMerge } from 'dimensions-ai/lib/utils/DeepMerge';
 import fs from 'fs';
@@ -23,7 +24,8 @@ export interface GameResults {
 export interface MatchState {
   gamemap: GameMap,
   round: number,
-  agentIDToTeam: Map<number, number>
+  agentIDToTeam: Map<number, number>,
+  teamToAgentID: Map<number, number>
   /**
    * Ids of the agents that were terminated due to errors such as timeout or too much memory use
    */
@@ -45,15 +47,47 @@ export enum DIRECTION {
 export const SEEKER = 2;
 export const HIDER = 3;
 export interface HideAndSeekConfigs {
+  /**
+   * Whether or not print a live game display to the terminal
+   */
   liveView: boolean,
+  /**
+   * How often display should update
+   */
   delay: number,
+  /**
+   * Max rounds before game ends
+   */
   roundLimit: number,
+  /**
+   * Directory to store replays in
+   */
   replayDirectory: string,
+  /**
+   * Game seed for map generation
+   */
   seed: number,
   mode: GameModes,
+  /**
+   * Whether or not to randomize which team gets the seeker. If false, first agent is always the seeker
+   * 
+   * @default `true`
+   */
   randomizeSeeker: boolean,
   parameters: {
-    VISION_RANGE: number
+    /**
+     * R^2 distance of how far units can see
+     */
+    VISION_RANGE: number,
+    /**
+     * How dense map is with walls
+     */
+    DENSITY: number,
+    SEEKER_MAX: number,
+    MIN_WIDTH: number,
+    MIN_HEIGHT: number,
+    MAX_WIDTH: number,
+    MAX_HEIGHT: number
   }
 }
 export enum GameModes {
@@ -64,12 +98,18 @@ export const defaultMatchConfigs: HideAndSeekConfigs = {
   liveView: true,
   delay: 0.2,
   roundLimit: 200,
-  seed: 30129,
+  seed: 30,
   replayDirectory: './replays',
   mode: GameModes.tag,
   randomizeSeeker: true,
   parameters: {
-    VISION_RANGE: 48
+    VISION_RANGE: 48,
+    DENSITY: 0.35,
+    SEEKER_MAX: 3,
+    MIN_HEIGHT: 16,
+    MIN_WIDTH: 16,
+    MAX_HEIGHT: 24,
+    MAX_WIDTH: 24
   }
 }
 
@@ -91,11 +131,31 @@ export default class HideAndSeekDesign extends Design {
 
   async initialize(match: Match) {
     
-    let width = 16;
-    let height = 16;
+    
     let configs = deepCopy(defaultMatchConfigs);
     configs = deepMerge(configs, match.configs);
     match.configs = configs;
+
+    let rng = seedrandom(match.configs.seed)
+    // @ts-ignore;
+    let params = (<HideAndSeekConfigs>(match.configs)).parameters;
+
+    // create map
+    let width = 16;
+    let height = 16;
+    width = params.MIN_WIDTH + Math.floor((params.MAX_WIDTH - params.MIN_WIDTH) * rng());
+    height = params.MIN_HEIGHT + Math.floor((params.MAX_HEIGHT - params.MIN_HEIGHT) * rng());
+    if (width % 2 == 1) {
+      if (width > params.MIN_WIDTH) {
+        width -= 1;
+      }
+    }
+    if (height % 2 == 1) {
+      if (height > params.MIN_HEIGHT) {
+        height -= 1;
+      }
+    }
+    console.log(width, height);
     let gamemap = mapGen(width, height, configs);
     let seekerCount = 1;
     let hiderCount = 1;
@@ -103,6 +163,7 @@ export default class HideAndSeekDesign extends Design {
       gamemap: gamemap,
       round: 0,
       agentIDToTeam: new Map(),
+      teamToAgentID: new Map(),
       ownedIDs: new Map(),
       terminatedIDs: [],
       replay: null
@@ -130,16 +191,21 @@ export default class HideAndSeekDesign extends Design {
         hiderSet.add(unit.id);
       }
     });
+    
     // randomly choose seeker or hider team
-    if (!match.configs.randomizeSeeker || Math.random() <= 0.5 ) {
+    if (!match.configs.randomizeSeeker || rng() <= 0.5 ) {
       state.agentIDToTeam.set(0, SEEKER);
       state.agentIDToTeam.set(1, HIDER);
+      state.teamToAgentID.set(SEEKER, 0);
+      state.teamToAgentID.set(HIDER, 1);
       gamemap.ownedIDs.set(0, seekerSet);
       gamemap.ownedIDs.set(1, hiderSet);
     }
     else {
       state.agentIDToTeam.set(1, SEEKER);
       state.agentIDToTeam.set(0, HIDER);
+      state.teamToAgentID.set(SEEKER, 1);
+      state.teamToAgentID.set(HIDER, 0);
       gamemap.ownedIDs.set(1, seekerSet);
       gamemap.ownedIDs.set(0, hiderSet);
     }
@@ -322,8 +388,9 @@ export default class HideAndSeekDesign extends Design {
     console.clear();
     let { seekerIDs, hiderIDs } = this.getIDs(gamemap);
     console.log(`Match: ${match.name} | Round # - ${state.round}`);
-    console.log('Seeker # -'.cyan, seekerIDs);
-    console.log('Hider # -'.red, hiderIDs);
+    console.log(`Player: ${match.agents[state.teamToAgentID.get(SEEKER)].name} | Seeker # -`.cyan, seekerIDs);
+    console.log(`Player: ${match.agents[state.teamToAgentID.get(HIDER)].name} | Hider # -`.red, hiderIDs);
+    // console.log(`Map Info: ${gamemap.width()}x${gamemap.height()}`);
     for (let i = 0 ; i < gamemap.height(); i++) {
       let str = [];
       for (let j = 0; j < gamemap.width(); j++) {

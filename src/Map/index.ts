@@ -14,15 +14,15 @@ export class GameMap {
    */
   public map: Array<Array<number>> = [[]];
   public idMap: Map<number, Unit> = new Map();
-  public gameID: number = 5;
+  public gameID: number = 4;
   // map from agent ID to the set of unit IDs they own
   public ownedIDs: Map<number, Set<number>> = new Map();
   constructor(width: number, height: number, public configs: HideAndSeekConfigs) {
 
     this.map = [];
-    for (let i = 0; i < width; i++) {
+    for (let i = 0; i < height; i++) {
       this.map.push([]);
-      for (let j = 0 ; j < height; j++) {
+      for (let j = 0 ; j < width; j++) {
         this.map[i].push(EMPTY);
       }
     }
@@ -34,16 +34,18 @@ export class GameMap {
     return this.map.length;
   }
   spawnSeeker(x: number, y: number) {
-    let id = this.gameID++;
+    let id = this.gameID;
     let seeker = new Seeker(x, y, id);
     this.map[y][x] = id;
     this.idMap.set(id, seeker);
+    this.gameID++;
   }
   spawnHider(x: number, y: number) {
-    let id = this.gameID++;
+    let id = this.gameID;
     let hider = new Hider(x, y, id);
     this.map[y][x] = id;
     this.idMap.set(id, hider);
+    this.gameID++;
   }
   setWall(x: number, y: number) {
     this.map[y][x] = WALL;
