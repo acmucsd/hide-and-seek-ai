@@ -5,4 +5,4 @@ replays
 test/bots
 test/keys
 .env
-./test/run.*.js
+test/run.prod.js
