@@ -19,6 +19,6 @@
   "license": "MIT",
   "dependencies": {
     "colors": "^1.4.0",
-    "dimensions-ai": "^2.4.2"
+    "dimensions-ai": "^2.5.2"
   }
 }

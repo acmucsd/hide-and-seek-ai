@@ -3,7 +3,7 @@ import { create, Logger } from 'dimensions-ai';
 
 let hideandseekdesign = new HideAndSeekDesign('HideAndSeek!', {
   engineOptions: {
-    noStdErr: false,
+    noStdErr: true,
     timeout: {
       max: 200
     }
@@ -11,15 +11,16 @@ let hideandseekdesign = new HideAndSeekDesign('HideAndSeek!', {
 });
 
 let hideandseek = create(hideandseekdesign, {
-  loggingLevel: Logger.LEVEL.DETAIL,
-  activateStation: false,
-  observe: false,
+  loggingLevel: Logger.LEVEL.SYSTEM,
+  activateStation: true,
+  observe: true,
   secureMode: true
 });
 
 let randomBot = {file: './kits/js/bot.js', name: 'random'};
 let stillbot = {file: './test/bots/js/stillbot/bot.js', name:'still'};
-let botlist = [{file: './test/bots/js/chasebot/bot.js', name: 'chaser'}, stillbot];
+let chaseBot = {file: './test/bots/js/chasebot/bot.js', name: 'chaser'};
+let botlist = [chaseBot, randomBot];
 // for (let i = 0; i < 2; i++) {
 
 //   botlist.push({file: './kits/js/bot.js', name: 'random_' + i});
@@ -32,6 +33,6 @@ hideandseek.runMatch(botlist, {
   seed: 300
 }).then((res) => {
   console.log(res);
-})
+});
 
 
