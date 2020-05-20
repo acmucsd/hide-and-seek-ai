@@ -5,13 +5,13 @@ let hideandseekdesign = new HideAndSeekDesign('HideAndSeek!', {
   engineOptions: {
     noStdErr: true,
     timeout: {
-      max: 200
+      max: 1000
     }
   }
 });
 
 let hideandseek = create(hideandseekdesign, {
-  loggingLevel: Logger.LEVEL.SYSTEM,
+  loggingLevel: Logger.LEVEL.WARN,
   activateStation: true,
   observe: true,
   secureMode: true
@@ -27,8 +27,8 @@ let botlist = [chaseBot, randomBot];
 // }
 let bot = {file: './kits/js/bot.js', name: 'bot'};
 hideandseek.runMatch(botlist, {
-  delay: 0.5,
-  randomizeSeeker: false,
+  delay: 0.2,
+  randomizeSeeker: true,
   liveView: true,
   seed: 300
 }).then((res) => {

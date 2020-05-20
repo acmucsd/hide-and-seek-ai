@@ -13,9 +13,10 @@ export const mapGen = (width: number, height: number, configs: HideAndSeekConfig
   map.setWall(6, 6);
   map.setWall(8, 2); map.setWall(8, 3); map.setWall(8, 4); map.setWall(7, 3);
   map.spawnHider(6,5);
+  map.spawnHider(10,5);
   // map.spawnHider(0,2);
   // map.spawnSeeker(6, 10);
-  for (let i = 0; i < height; i++) {
+  for (let i = 0; i < height/ 2; i++) {
     map.setWall(Math.floor(width/2), i);
   }
   map.spawnSeeker(3, 5);

@@ -135,4 +135,4 @@ class Agent {
   }
 }
 
-module.exports = { Agent, DIRECTION, ALL_DIRECTIONS };
+module.exports = { Agent, DIRECTION, ALL_DIRECTIONS, SEEKER, HIDER };

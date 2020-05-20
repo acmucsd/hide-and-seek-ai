@@ -1,5 +1,5 @@
 import { Design, Match, MatchEngine, MatchError, FatalError, Tournament } from 'dimensions-ai';
-import { GameMap, EMPTY } from './Map';
+import { GameMap, EMPTY, MOVE_DELTAS } from './Map';
 import { Seeker } from './Seeker';
 import { Hider } from './Hider';
 import { mapGen } from './Map/gen';
@@ -24,8 +24,6 @@ export interface MatchState {
   gamemap: GameMap,
   round: number,
   agentIDToTeam: Map<number, number>
-  // map from agent ID to the set of unit IDs they own
-  ownedIDs: Map<number, Set<number>>
   /**
    * Ids of the agents that were terminated due to errors such as timeout or too much memory use
    */
@@ -64,8 +62,8 @@ export enum GameModes {
 }
 export const defaultMatchConfigs: HideAndSeekConfigs = {
   liveView: true,
-  delay: 1,
-  roundLimit: 100,
+  delay: 0.2,
+  roundLimit: 200,
   seed: 30129,
   replayDirectory: './replays',
   mode: GameModes.tag,
@@ -136,14 +134,14 @@ export default class HideAndSeekDesign extends Design {
     if (!match.configs.randomizeSeeker || Math.random() <= 0.5 ) {
       state.agentIDToTeam.set(0, SEEKER);
       state.agentIDToTeam.set(1, HIDER);
-      state.ownedIDs.set(0, seekerSet);
-      state.ownedIDs.set(1, hiderSet);
+      gamemap.ownedIDs.set(0, seekerSet);
+      gamemap.ownedIDs.set(1, hiderSet);
     }
     else {
       state.agentIDToTeam.set(1, SEEKER);
       state.agentIDToTeam.set(0, HIDER);
-      state.ownedIDs.set(1, seekerSet);
-      state.ownedIDs.set(0, hiderSet);
+      gamemap.ownedIDs.set(1, seekerSet);
+      gamemap.ownedIDs.set(0, hiderSet);
     }
 
     for (let i = 0; i < match.agents.length; i++) {
@@ -222,7 +220,7 @@ export default class HideAndSeekDesign extends Design {
           continue;
         }
         // check if agent owns this unit
-        if (!state.ownedIDs.get(agentID).has(id)) {
+        if (!gamemap.ownedIDs.get(agentID).has(id)) {
           match.throw(agentID, new MatchError(`Agent ${agentID} tried to move unit ${id} but does not own it - cmd: ${command.command}`));
           continue;
         }
@@ -240,22 +238,47 @@ export default class HideAndSeekDesign extends Design {
       }
     });
     state.replay.writeMoves(successfulMoves);
+    
+    let { seekerIDs, hiderIDs } = this.getIDs(gamemap);
+    let seekerLocationSet = new Set();
+    seekerIDs.forEach((id) => {
+      let unit = gamemap.idMap.get(id);
+      seekerLocationSet.add(gamemap.hashLoc(unit.x, unit.y));
+    })
+    // capture hiders if they are tagged
+    hiderIDs.forEach((id) => {
+      let unit = gamemap.idMap.get(id);
+      for (let i = 0; i < MOVE_DELTAS.length; i++) {
+        // check surrounding tiles for seekers
+        let delta = MOVE_DELTAS[i];
+        let nx = unit.x + delta[0];
+        let ny = unit.y + delta[1];
+        let hash = gamemap.hashLoc(nx, ny);
+        if (seekerLocationSet.has(hash)) {
+          gamemap.removeHider(unit);
+        }
+      }
+    });
+    hiderIDs = this.getIDs(gamemap).hiderIDs;
 
-
-    if (this.gameOver(match)) {
-      state.replay.writeOut();
-      return Match.Status.FINISHED;
-    }
+    // print display if enabled
     if (match.configs.liveView) {
       this.printDisplay(match);
       await this.sleep(match.configs.delay * 1000);
     }
 
+    if (this.gameOver(match)) {
+      state.replay.writeOut();
+      return Match.Status.FINISHED;
+    }
+
+    
+
     
     // send updates
 
     // send available unit ids still
-    let { seekerIDs, hiderIDs } = this.getIDs(gamemap);
+    
     for (let i = 0; i < match.agents.length; i++) {
       let agentID = match.agents[i].id;
       let team = state.agentIDToTeam.get(agentID);

@@ -15,6 +15,8 @@ export class GameMap {
   public map: Array<Array<number>> = [[]];
   public idMap: Map<number, Unit> = new Map();
   public gameID: number = 5;
+  // map from agent ID to the set of unit IDs they own
+  public ownedIDs: Map<number, Set<number>> = new Map();
   constructor(width: number, height: number, public configs: HideAndSeekConfigs) {
 
     this.map = [];
@@ -96,12 +98,11 @@ export class GameMap {
     return this.map[y][x] === EMPTY;
   }
 
-  removeCaughtHiders() {
-    this.idMap.forEach((unit) => {
-      if (unit.type === SEEKER) {
-        
-      }
-    });
+  removeHider(unit: Hider) {
+    this.map[unit.y][unit.x] = EMPTY;
+    this.idMap.delete(unit.id);
+    this.ownedIDs.get(0).delete(unit.id);
+    this.ownedIDs.get(1).delete(unit.id);
   }
 
   /**
