@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "lib/",
+    "sourceMap": true,
+    "declaration": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "docs",
+    "lib",
+    "examples",
+    "templates",
+    "src/Station/web/**/*",
+    "src/Station/local/**/*"
+  ]
+}

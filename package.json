@@ -1,0 +1,24 @@
+{
+  "name": "hide-and-seek-ai",
+  "version": "1.0.0",
+  "description": "The Hide and Seek AI Competition Engine",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [
+    "AI",
+    "hide",
+    "and",
+    "seek",
+    "competition",
+    "engine"
+  ],
+  "author": "ACM AI",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "dimensions-ai": "^2.4.2"
+  }
+}
