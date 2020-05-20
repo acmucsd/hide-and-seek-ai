@@ -3,3 +3,5 @@ lib
 .log
 replays
 test/bots
+test/keys
+.env

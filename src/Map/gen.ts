@@ -40,7 +40,6 @@ export const mapGen = (width: number, height: number, configs: HideAndSeekConfig
     for (let i = 0; i < SeekerCount; i++) {
       let x = Math.floor(rng() * (width2 - 4));
       let y = Math.floor(rng() * (height2 - 1));
-      console.log(x, y);
       map.spawnSeeker(x, y);
       map.spawnHider(width - x - 1, y);
     }
