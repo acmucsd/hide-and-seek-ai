@@ -1,4 +1,4 @@
-import { Design, Match, MatchEngine, MatchError, FatalError, Tournament } from 'dimensions-ai';
+import { Design, Match, MatchEngine, MatchError, FatalError, Tournament, MatchWarn } from 'dimensions-ai';
 import { GameMap, EMPTY, MOVE_DELTAS, WALL } from './Map';
 import { Seeker } from './Seeker';
 import { Hider } from './Hider';
@@ -117,7 +117,10 @@ export const defaultMatchConfigs: HideAndSeekConfigs = {
 
 export default class HideAndSeekDesign extends Design {
 
-  getIDs(gamemap: GameMap) {
+  /**
+   * Gets the seekerIDs and hiderIDs from a gamemap
+   */
+  private getIDs(gamemap: GameMap): {seekerIDs: Array<number>, hiderIDs: Array<number>} {
     let seeker = [];
     let hider = [];
     gamemap.idMap.forEach((unit) => {
@@ -215,24 +218,11 @@ export default class HideAndSeekDesign extends Design {
     for (let i = 0; i < match.agents.length; i++) {
       let agentID = match.agents[i].id;
       // sends the string `${agentID}` to the agent specified by agentID
-      // and sends what team they are on, 0 for hider, 1 for seeker
+      // and sends what team they are on, 3 for hider, 2 for seeker
       await match.send(`${agentID},${state.agentIDToTeam.get(agentID)}`, agentID); 
     }
 
-    let { seekerIDs, hiderIDs } = this.getIDs(gamemap);
-    for (let i = 0; i < match.agents.length; i++) {
-      let agentID = match.agents[i].id;
-      let team = state.agentIDToTeam.get(agentID);
-      if (team === SEEKER) {
-        await match.send(`${seekerIDs.join(',')}`, agentID); 
-        // match.send(`${seekerPositions.join(',')}`, agentID);
-      }
-      else {
-        await match.send(`${hiderIDs.join(',')}`, agentID);
-        // match.send(`${hiderPositions.join(',')}`, agentID);
-      }
-      
-    };
+    await this.sendSeekersAndHidersInformation(match);
 
     // also would be good to send any global information to all agents
     await match.sendAll(`${gamemap.width()},${gamemap.height()}`);
@@ -250,53 +240,93 @@ export default class HideAndSeekDesign extends Design {
     
   }
 
+  /**
+   * Sends unit ids and their locations to the respective teams
+   */
+  private async sendSeekersAndHidersInformation(match: Match) {
+    let state: MatchState = match.state;
+    let { seekerIDs, hiderIDs } = this.getIDs(state.gamemap);
+    for (let i = 0; i < match.agents.length; i++) {
+      let agentID = match.agents[i].id;
+      let team = state.agentIDToTeam.get(agentID);
+      if (team === SEEKER) {
+        let strs = [];
+        seekerIDs.forEach((id) => {
+          let unit = state.gamemap.idMap.get(id);
+          // send id and the units x y coords
+          strs.push(`${id}_${unit.x}_${unit.y}`);
+        });
+        await match.send(`${strs.join(',')}`, agentID); 
+      }
+      else {
+        let strs = [];
+        hiderIDs.forEach((id) => {
+          let unit = state.gamemap.idMap.get(id);
+          // send id and the units x y coords
+          strs.push(`${id}_${unit.x}_${unit.y}`);
+        });
+        await match.send(`${strs.join(',')}`, agentID);
+        // match.send(`${hiderPositions.join(',')}`, agentID);
+      }
+      
+    };
+  }
+
   async update(match: Match, commands: Array<MatchEngine.Command> ): Promise<Match.Status> {
     let state: MatchState = match.state
     match.state.round++;
     this.log.detail('Starting round ' + match.state.round);
+    
     let gamemap = state.gamemap;
 
-    // check aliveness
+    // check aliveness of each agent
     let terminatedIDs = [];
     match.agents.forEach((agent) => {
       if (agent.isTerminated()) {
         terminatedIDs.push(agent.id);
       }
     });
+
+    // if any bot was terminated, we finish the match and save what we have so far
     if (terminatedIDs.length > 0) {
       state.terminatedIDs = terminatedIDs;
       state.replay.writeOut();
       return Match.Status.FINISHED;
     }
 
-    // clean up commands
+    // clean up commands and keep only the valid commands, throw errors for any bad commands
     // parsed commands sorted in order of ID.
     let parsedCommands: Array<{agentID: number, unitID: number, dir: DIRECTION}> = [];
+    let unitIDsMoved = new Set();
     for (let i = 0; i < commands.length; i++) {
       let command = commands[i];
       let data = command.command.split("_");
       let id = parseInt(data[0]);
       let dir = parseInt(data[1]);
       let agentID = command.agentID;
+      
       if (isNaN(dir) || isNaN(id)) {
-        match.throw(agentID, new MatchError(`Agent ${agentID} unit ${id} logged an invalid move: ${command.command}`));
-        // match.kill(agentID);
+        match.throw(agentID, new MatchWarn(`logged an invalid move: ${command.command}`));
         continue;
       }
-      else {
-        if (dir < 0 || dir > 8) {
-          match.throw(agentID, new MatchError(`Agent ${agentID} unit ${id} logged an invalid move: ${command.command}`));
-          // match.kill(agentID);
-          continue;
-        }
-        // check if agent owns this unit
-        if (!gamemap.ownedIDs.get(agentID).has(id)) {
-          match.throw(agentID, new MatchError(`Agent ${agentID} tried to move unit ${id} but does not own it - cmd: ${command.command}`));
-          continue;
-        }
+      if (dir < 0 || dir > 8) {
+        match.throw(agentID, new MatchWarn(`logged an invalid move direction: ${command.command}`));
+        continue;
+      }
+      // check if agent owns this unit
+      if (!gamemap.ownedIDs.get(agentID).has(id)) {
+        match.throw(agentID, new MatchWarn(`tried to move unit ${id} but does not own it - cmd: ${command.command}`));
+        continue;
+      }
+      // check if unit already moved
+      if (unitIDsMoved.has(id)) {
+        match.throw(agentID, new MatchWarn(`unit ${id} has already moved and cannot move again`));
+        continue;
       }
       // command passed, store it
       parsedCommands.push({agentID: agentID, unitID: id, dir: dir});
+      // store what units moved already
+      unitIDsMoved.add(id);
     }
 
     parsedCommands.sort((a, b) => a.unitID - b.unitID);
@@ -315,6 +345,7 @@ export default class HideAndSeekDesign extends Design {
       let unit = gamemap.idMap.get(id);
       seekerLocationSet.add(gamemap.hashLoc(unit.x, unit.y));
     })
+
     // capture hiders if they are tagged
     hiderIDs.forEach((id) => {
       let unit = gamemap.idMap.get(id);
@@ -331,38 +362,27 @@ export default class HideAndSeekDesign extends Design {
     });
     hiderIDs = this.getIDs(gamemap).hiderIDs;
     
+    // save some of the data
     state.replay.writeData(successfulMoves, seekerIDs, hiderIDs);
+    
     // print display if enabled
     if (match.configs.liveView) {
       this.printDisplay(match);
       await HideAndSeekDesign._sleep(match.configs.delay * 1000);
     }
 
+    /** Check if game over */
     if (this.gameOver(match)) {
       state.replay.writeOut();
       return Match.Status.FINISHED;
     }
 
-    
+    /** UPDATE SECTION */
 
-    
-    // send updates
+    // send unit information
+    await this.sendSeekersAndHidersInformation(match);
 
-    // send available unit ids still
-    
-    for (let i = 0; i < match.agents.length; i++) {
-      let agentID = match.agents[i].id;
-      let team = state.agentIDToTeam.get(agentID);
-      if (team === SEEKER) {
-        await match.send(`${seekerIDs.join(',')}`, agentID); 
-      }
-      else {
-        await match.send(`${hiderIDs.join(',')}`, agentID);
-      }
-      
-    };
-
-    // send map
+    // send map information
     let mapStrings = gamemap.createMapStrings(match);
 
     for (let i = 0; i < mapStrings.length; i++) {
@@ -371,23 +391,23 @@ export default class HideAndSeekDesign extends Design {
         await match.send(mapString[j], i);
       }
     }
-    
 
     return Match.Status.RUNNING;
   }
 
-  static async _sleep (time: number) {
+  private static async _sleep (time: number) {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve();
       }, time);
     });
   }
+
   /**
    * Live print the match, kind of slow however
    * @param match 
    */
-  printDisplay(match: Match) {
+  private printDisplay(match: Match) {
     let state: MatchState = match.state;
     let gamemap: GameMap = state.gamemap;
     console.clear();
@@ -465,7 +485,7 @@ export default class HideAndSeekDesign extends Design {
     return result;
   }
 
-  setResult(result: GameResults, winningID: number, losingID: number, match: Match) {
+  private setResult(result: GameResults, winningID: number, losingID: number, match: Match) {
     let agents = match.agents;
     result.winningID = winningID;
     result.losingID = losingID;

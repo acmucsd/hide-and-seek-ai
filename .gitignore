@@ -5,5 +5,4 @@ replays
 test/bots
 test/keys
 .env
-test/run.prod.js
 .DS_STORE

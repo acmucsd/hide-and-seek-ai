@@ -20,6 +20,17 @@ const ALL_DIRECTIONS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 const Parser = require('./parser');
 const parse = new Parser(',');
 
+class Unit {
+  constructor(id, x, y) {
+    this.id = id;
+    this.x = x;
+    this.y = y;
+  }
+  move(dir) {
+    return `${this.id}_${dir}`;
+  }
+}
+
 /**
  * Agent for sequential `Designs`
  */
@@ -63,12 +74,23 @@ class Agent {
     this.getLine = getLine;
   }
 
-  /**
-   * Constructor for a new agent
-   * User should edit this according to the `Design` this agent will compete under
-   */
   constructor() {
     this._setup(); // DO NOT REMOVE
+  }
+
+  /**
+   * Store unit ifnrmation
+   */
+  async _storeUnitInformation() {
+    let unitIDsAndCoordinates = (await this.getLine()).nextStrArr();
+    let units = [];
+    unitIDsAndCoordinates.forEach((info) => {
+      info = info.split("_");
+      let unit = new Unit(info[0], info[1], info[2]);
+      units.push(unit);
+    });
+    this.units = units;
+
   }
 
   /**
@@ -83,44 +105,35 @@ class Agent {
     this.id = meta[0];
     this.team = meta[1]; // equals SEEKER=3 of HIDER=2
 
-    // get unit ids
-    let unitIDs = (await this.getLine()).nextIntArr();
-    this.units = unitIDs;
-    // console.error('my units: ' + this.units);
-    // get some other necessary initial input
+    // get unit information
+    await this._storeUnitInformation();
+
+    // get map input
     let mapInfo = (await this.getLine()).nextIntArr();
     let width = mapInfo[0];
     let height = mapInfo[1];
     this.map = [];
     for (let i = 0; i < height; i++) {
       let line = (await this.getLine()).nextIntArr();
-      
       this.map.push(line);
     }
     
-    // console.error(this.map);
   }
   /**
    * Updates agent's own known state of `Match`
-   * User should edit this according to their `Design`.
    */
   async update() {
 
-    // wait for the engine to send any updates
-    let unitIDs = (await this.getLine()).nextIntArr();
     this.round++;
-    this.units = unitIDs;
+    
+    // get unit information
+    await this._storeUnitInformation();
+
+    // get map updates
     for (let i = 0; i < this.map.length; i++) {
       let line = (await this.getLine()).nextIntArr();
       this.map[i] = line;
     }
-  }
-
-  /**
-   * Returns whats in vision
-   */
-  vision() {
-
   }
 
   move(unitID, direction) {
@@ -135,4 +148,49 @@ class Agent {
   }
 }
 
-module.exports = { Agent, DIRECTION, ALL_DIRECTIONS, SEEKER, HIDER };
+/**
+ * Applies a direction to x,y and returns an object { x: number, y: number } that 
+ * represents the coordinates after going in that direction by one step.
+ * @param {number} x 
+ * @param {number} y 
+ * @param {number} dir 
+ */
+function applyDirection(x, y, dir) {
+  let newx = x;
+  let newy = y;
+  switch(dir) {
+    case DIRECTION.NORTH:
+      newy -=1;
+      break;
+    case DIRECTION.NORTHEAST:
+      newy -=1;
+      newx +=1;
+      break;
+    case DIRECTION.EAST:
+      newx += 1;
+      break;
+    case DIRECTION.SOUTHEAST:
+      newx += 1;
+      newy += 1;
+      break;
+    case DIRECTION.SOUTH:
+      newy += 1;
+      break;
+    case DIRECTION.SOUTHWEST:
+      newy += 1;
+      newx -= 1;
+      break;
+    case DIRECTION.WEST:
+      newx -= 1;
+      break;
+    case DIRECTION.NORTHWEST:
+      newx -= 1;
+      newy -= 1;
+      break;
+    case DIRECTION.STILL:
+      break;
+  }
+  return { x: newx, y: newy};
+}
+
+module.exports = { Agent, DIRECTION, ALL_DIRECTIONS, SEEKER, HIDER, applyDirection };
