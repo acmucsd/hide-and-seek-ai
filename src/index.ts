@@ -340,8 +340,7 @@ export default class HideAndSeekDesign extends Design {
       return Match.Status.FINISHED;
     }
 
-    // clean up commands and keep only the valid commands, throw errors for any bad commands
-    // parsed commands sorted in order of ID.
+    /** Command Parsing */
     let parsedCommands: Array<{agentID: number, unitID: number, dir: DIRECTION}> = [];
     let unitIDsMoved = new Set();
     for (let i = 0; i < commands.length; i++) {
@@ -375,6 +374,9 @@ export default class HideAndSeekDesign extends Design {
       unitIDsMoved.add(id);
     }
 
+    /**
+     * Sort commands in order of unit id
+     */
     parsedCommands.sort((a, b) => a.unitID - b.unitID);
     let successfulMoves = [];
     parsedCommands.forEach((cmd) => {
@@ -408,7 +410,7 @@ export default class HideAndSeekDesign extends Design {
     });
     hiderIDs = this.getIDs(gamemap).hiderIDs;
     
-    // save some of the data
+    // save moves data
     state.replay.writeData(successfulMoves, seekerIDs, hiderIDs);
     
     // print display if enabled

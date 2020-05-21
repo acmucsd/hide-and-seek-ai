@@ -9,6 +9,8 @@ export abstract class Unit {
 
   /**
    * Returns new directions if can move. False otherwise
+   * 
+   * Can move if the position is in the map, and is empty
    * @param dir 
    * @param map 
    */
