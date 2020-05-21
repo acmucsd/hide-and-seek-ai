@@ -1,10 +1,12 @@
 # Hide and Seek AI Competition
 
-This is the ACM AI at UCSD prototype AI Competition!
+Welcome to the Hide and Seek AI competition. This is the first ACM AI at UCSD prototype so expect *many* bugs. So what is the game?
 
-To run a match locally, you will need Node v.12 and npm.
+It's like hide and seek and also tag. Your AI will need to be able to play as both the chaser and the hider. Your AI's objective as the seeker is to find the hiders and tag them. Your AI's objective as the hider is to dodge the seekers and hide from them.
 
-Keep reading to see how to get started, [run a match](#run-a-match), and the [rules for this competition](#rules).
+Read the [specs](#specs) for specific information on how to play and what the rules are
+
+Keep reading to see how to get started really quick and [run a match](#run-a-match) to test your bots!
 
 ## Getting Started
 
@@ -60,9 +62,19 @@ HideAndSeekDesign.watch('./replays/your_replay_file.json', 0.2);
 
 This will run the liveViewer shown earlier in your terminal at a speed of 0.2 seconds per frame (5 FPS)
 
-## Rules
+## Specs
 
-This is a game of hide and seek
+This is a game of hide and seek (and tag).
+
+This is a two agent/player game, one player will be the <span style='color: red'>Seeker</span> team, the other will be the Hider team. The AI will play on a 2D Map of dimensions ranging from 16x16 to 24x24 (not necessarily square). The map is composed of empty tiles (0s) and wall tiles (1s), and other numbers represent the ID of the unit on that tile.
+
+Seekers and Hiders are both called `Units`, which can do only two things, move in the North, Northeast, East, ... West, Southwest directions, or stay put and do nothing. If a Hider is adjacent to a Seeker, the Hider is considered to have been tagged by the Seeker and will now be removed from the game. In each round, the AI can send commands to move their seekers (if they are the seeker team) or move their hiders (if they are the hider team) in one direction and only once. (You will get a warning if you try to move a unit multiple times)
+
+The game ends when the max round limit (200) has reached or there are no more hiders left on the map.
+
+The game also uses fog of war for all players. Both teams are always given the map layout, which includes the empty and wall tiles, and their own units, along with where their units are. However, you are only given the x, y coordinates of an opposing team's units if at least one of your units can **see** that opposing team's unit. 
+
+Units vision can see as far as 48R^2. R^2 is the euclidean distance but squared. For a visual of how distance in R^2 works, see [this](). Furthermore, walls on the map block a unit's line of sight, and units cannot see behind walls.
 
 ## Languages
 
