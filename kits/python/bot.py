@@ -14,7 +14,7 @@ while True:
     commands = []
     units = agent.units
     opposingUnits = agent.opposingUnits
-    map = agent.map
+    game_map = agent.map
 
     # AI Code goes here
     if (agent.team == Team.SEEKER):
@@ -23,8 +23,8 @@ while True:
         for _, unit in enumerate(units):
             # unit.id is id of the unit
             # unit.x unit.y are its coordinate
-            # map is the 2D map of what you can see. 
-            # map[i][j] returns whats on that tile, 0 = empty, 1 = wall, 
+            # game_map is the 2D map of what you can see. 
+            # game_map[i][j] returns whats on that tile, 0 = empty, 1 = wall, 
             # anything else is then the id of a unit which can be yours or the opponents
 
              # choose a random direction to move in
