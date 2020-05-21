@@ -12,8 +12,8 @@ let hideandseekdesign = new HideAndSeekDesign('HideAndSeek!', {
 });
 let hideandseek = create(hideandseekdesign, {
   loggingLevel: Logger.LEVEL.WARN,
-  activateStation: true,
-  observe: true,
+  activateStation: false,
+  observe: false,
 });
 
 let jskit = {file: './kits/js/bot.js', name: 'js-kit'};
@@ -21,7 +21,7 @@ let jskit = {file: './kits/js/bot.js', name: 'js-kit'};
 hideandseek.runMatch([jskit, jskit], {
   delay: 0.2,
   liveView: true,
-  seed: 30
+  seed: 32
 }).then((res) => {
   console.log(res);
 });

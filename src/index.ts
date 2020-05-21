@@ -224,24 +224,28 @@ export default class HideAndSeekDesign extends Design {
 
     await this.sendSeekersAndHidersInformation(match);
 
-    // also would be good to send any global information to all agents
+    // send the initial map configuration not including unit ids
     await match.sendAll(`${gamemap.width()},${gamemap.height()}`);
-    let mapStrings = gamemap.createMapStrings(match);
-
-    for (let i = 0; i < mapStrings.length; i++) {
-      let mapString = mapStrings[i];
-      for (let j = 0; j < mapString.length; j++) {
-        await match.send(mapString[j], i);
+    for (let y = 0; y < gamemap.height(); y++) {
+      let strs = [];
+      for (let x = 0; x < gamemap.width(); x++) {
+        if (gamemap.hasUnit(x, y)) {
+          strs.push("0");
+        }
+        else {
+          strs.push(gamemap.map[y][x]);
+        }
       }
+      await match.sendAll(strs.join(","));
     }
     state.replay.writeMeta(match);
-    // state.replay.writeAgent(state.agentIDToTeam);
     state.replay.writeTeam(state.teamToAgentID);
     
   }
 
   /**
    * Sends unit ids and their locations to the respective teams
+   * Furthermore, send opposing team ids and location if they can be seen
    */
   private async sendSeekersAndHidersInformation(match: Match) {
     let state: MatchState = match.state;
@@ -251,22 +255,64 @@ export default class HideAndSeekDesign extends Design {
       let team = state.agentIDToTeam.get(agentID);
       if (team === SEEKER) {
         let strs = [];
+        // send all seekers
+
+        let seenHiderIDs: Set<number> = new Set();
         seekerIDs.forEach((id) => {
           let unit = state.gamemap.idMap.get(id);
           // send id and the units x y coords
           strs.push(`${id}_${unit.x}_${unit.y}`);
+          // find which hiders this unit can see
+          hiderIDs.forEach((hiderID) => {
+            // i know, this code is a little slow
+            if (!seenHiderIDs.has(hiderID)) {
+              let hiderUnit = state.gamemap.idMap.get(hiderID);
+              let dist = state.gamemap.distance(unit.x, unit.y, hiderUnit.x, hiderUnit.y);
+              if (dist <= match.configs.parameters.VISION_RANGE && !state.gamemap.sightBlocked(unit.x, unit.y, hiderUnit.x, hiderUnit.y)) {
+                seenHiderIDs.add(hiderID);
+              }
+            }
+          })
         });
         await match.send(`${strs.join(',')}`, agentID); 
+        
+        // send all hiders in vision
+        let hiderStrs = [];
+        seenHiderIDs.forEach((hiderID) => {
+          let hiderUnit = state.gamemap.idMap.get(hiderID);
+          hiderStrs.push(`${hiderID}_${hiderUnit.x}_${hiderUnit.y}`);
+        });
+        await match.send(`${hiderStrs.join(',')}`, agentID); 
+
       }
       else {
         let strs = [];
+        let seenSeekerIDs: Set<number> = new Set();
         hiderIDs.forEach((id) => {
           let unit = state.gamemap.idMap.get(id);
           // send id and the units x y coords
           strs.push(`${id}_${unit.x}_${unit.y}`);
+          // find which hiders this unit can see
+          seekerIDs.forEach((seekerID) => {
+            // i know, this code is a little slow
+            if (!seenSeekerIDs.has(seekerID)) {
+              let seekerUnit = state.gamemap.idMap.get(seekerID);
+              let dist = state.gamemap.distance(unit.x, unit.y, seekerUnit.x, seekerUnit.y);
+              if (dist <= match.configs.parameters.VISION_RANGE && !state.gamemap.sightBlocked(unit.x, unit.y, seekerUnit.x, seekerUnit.y)) {
+                seenSeekerIDs.add(seekerID);
+              }
+            }
+          })
         });
         await match.send(`${strs.join(',')}`, agentID);
-        // match.send(`${hiderPositions.join(',')}`, agentID);
+
+        // send all seekers in vision
+        let seekerStrs = [];
+        seenSeekerIDs.forEach((seekerID) => {
+          let seekerUnit = state.gamemap.idMap.get(seekerID);
+          seekerStrs.push(`${seekerID}_${seekerUnit.x}_${seekerUnit.y}`);
+        });
+        await match.send(`${seekerStrs.join(',')}`, agentID); 
       }
       
     };
@@ -381,16 +427,6 @@ export default class HideAndSeekDesign extends Design {
 
     // send unit information
     await this.sendSeekersAndHidersInformation(match);
-
-    // send map information
-    let mapStrings = gamemap.createMapStrings(match);
-
-    for (let i = 0; i < mapStrings.length; i++) {
-      let mapString = mapStrings[i];
-      for (let j = 0; j < mapString.length; j++) {
-        await match.send(mapString[j], i);
-      }
-    }
 
     return Match.Status.RUNNING;
   }

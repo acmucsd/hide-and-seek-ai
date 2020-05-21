@@ -91,6 +91,21 @@ class Agent {
     });
     this.units = units;
 
+    // reset opposing units
+    this.opposingUnits = [];
+
+    let otherUnitIDsAndCoordinatesLine = (await this.getLine());
+    if (otherUnitIDsAndCoordinatesLine.contents.length) {
+      let otherUnitIDsAndCoordinates = otherUnitIDsAndCoordinatesLine.nextStrArr();
+      let opposingUnits = [];
+      otherUnitIDsAndCoordinates.forEach((info) => {
+        info = info.split("_");
+        let unit = new Unit(parseInt(info[0]), parseInt(info[1]), parseInt(info[2]));
+        opposingUnits.push(unit);
+      });
+      this.opposingUnits = opposingUnits;
+    }
+
   }
 
   /**
@@ -117,6 +132,14 @@ class Agent {
       let line = (await this.getLine()).nextIntArr();
       this.map.push(line);
     }
+
+    // add unit ids onto the map
+    this.units.forEach((unit) => {
+      this.map[unit.y][unit.x] = unit.id;
+    });
+    this.opposingUnits.forEach((unit) => {
+      this.map[unit.y][unit.x] = unit.id;
+    });
     
   }
   /**
@@ -125,15 +148,24 @@ class Agent {
   async update() {
 
     this.round++;
-    
+    // reset map unit ids 
+    this.units.forEach((unit) => {
+      this.map[unit.y][unit.x] = 0;
+    });
+    this.opposingUnits.forEach((unit) => {
+      this.map[unit.y][unit.x] = 0;
+    });
     // get unit information
     await this._storeUnitInformation();
 
-    // get map updates
-    for (let i = 0; i < this.map.length; i++) {
-      let line = (await this.getLine()).nextIntArr();
-      this.map[i] = line;
-    }
+    // add unit ids onto the map
+    this.units.forEach((unit) => {
+      this.map[unit.y][unit.x] = unit.id;
+    });
+    this.opposingUnits.forEach((unit) => {
+      this.map[unit.y][unit.x] = unit.id;
+    });
+
   }
 
   move(unitID, direction) {

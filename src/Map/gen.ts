@@ -11,7 +11,7 @@ export enum SYMMETRY {
   VERTICAL
 }
 
-export const mapGen = (width: number, height: number, configs: HideAndSeekConfigs, rng: () => number) => {
+export const mapGen = (width: number, height: number, configs: HideAndSeekConfigs, rng: () => number): GameMap => {
   let map = new GameMap(width, height, configs);
   // vary density by 0.2
   let DENSITY = configs.parameters.DENSITY - 0.1 + 0.2 * rng();

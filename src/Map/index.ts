@@ -205,6 +205,7 @@ export class GameMap {
       let thisCellsDistance = this.distance(cell.x, cell.y, target.x, target.y);
       visitedSet.add(this.hashLoc(cell.x, cell.y));
       if (this.inMap(cell.x, cell.y)) {
+        // if current cell is in line of sight
         if (this.lineIntersectsCell(x1 + 0.5, y1 + 0.5, x2 + 0.5, y2 + 0.5, cell.x, cell.y)) {
           // TODO: Optionally, block by other units?
           if (this.map[cell.y][cell.x] !== WALL) {
