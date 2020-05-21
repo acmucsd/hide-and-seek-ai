@@ -6,3 +6,4 @@ test/bots
 test/keys
 .env
 .DS_STORE
+__pycache__
