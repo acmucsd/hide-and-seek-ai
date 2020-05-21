@@ -21,7 +21,7 @@ let pykit = {file: './kits/python/bot.py', name: 'py-kit'};
 
 hideandseek.runMatch([jskit, pykit], {
   delay: 0.2,
-  liveView: true,
+  liveView: false,
 }).then((res) => {
   console.log(res);
 });

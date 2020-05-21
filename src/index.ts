@@ -21,7 +21,8 @@ export interface GameResults {
   hider: string,
   seekerID: number,
   hiderID: number,
-  replayFile: string
+  replayFile: string,
+  terminatedIDs: Array<number>,
 }
 export interface MatchState {
   gamemap: GameMap,
@@ -467,7 +468,8 @@ export default class HideAndSeekDesign extends Design {
       hider: "",
       seekerID: -1,
       hiderID: -1,
-      replayFile: ""
+      replayFile: "",
+      terminatedIDs: []
     }
     let state: MatchState = match.state;
     result.replayFile = state.replay.path;
@@ -486,6 +488,7 @@ export default class HideAndSeekDesign extends Design {
       result.hiderID = 0;
     }
 
+    result.terminatedIDs = state.terminatedIDs
     if (state.terminatedIDs.length > 0) {
       // all agents terminated
       if (state.terminatedIDs.length === 2) {

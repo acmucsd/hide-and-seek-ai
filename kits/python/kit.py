@@ -52,7 +52,6 @@ class Agent:
         meta = read_input().split(",")
         self.id = int(meta[0])
         self.team = Team(int(meta[1]))
-        # print("ID: %d Team: %d" % (self.id, self.team), file=sys.stderr)
 
         self._store_unit_info();
         
@@ -67,7 +66,7 @@ class Agent:
                     parsedList.append(int(line[j]))
 
             self.map.append(parsedList)
-            # print(self.map[i], file=sys.stderr)
+
         self.round_num = 0
 
         self._update_map_with_ids()
@@ -92,13 +91,12 @@ class Agent:
 
     def _store_unit_info(self):
         units_and_coords = read_input().split(",")
-        # print("units_and_coords: " + units_and_coords, file=sys.stderr)
+
         self.units = []
         for _, val in enumerate(units_and_coords):
             if (val != ""):
                 [id, x, y] = [int(k) for k in val.split("_")]
                 self.units.append(Unit(id, x, y))
-                print("ID: %d (%d, %d)" % (id, x, y), file=sys.stderr)
 
         units_and_coords = read_input().split(",")
         self.opposingUnits = []
@@ -106,7 +104,6 @@ class Agent:
             if (value != ""):
                 [id, x, y] = [int(k) for k in val.split("_")]
                 self.opposingUnits.append(Unit(id, x, y))
-                print("ID: %d (%d, %d)" % (id, x, y), file=sys.stderr)
 
     """
     Updates Agent's own known state of `Match`
