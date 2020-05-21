@@ -160,7 +160,7 @@ export default class HideAndSeekDesign extends Design {
         height -= 1;
       }
     }
-    let gamemap = mapGen(width, height, configs);
+    let gamemap = mapGen(width, height, configs, rng);
     let seekerCount = 1;
     let hiderCount = 1;
     match.state = {

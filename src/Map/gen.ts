@@ -3,7 +3,7 @@
  */
 
 import { GameMap, EMPTY, WALL, MOVE_DELTAS } from "."
-import { HideAndSeekConfigs } from "..";
+import { HideAndSeekConfigs, DIRECTION } from "..";
 import seedrandom from 'seedrandom';
 
 export enum SYMMETRY {
@@ -11,9 +11,8 @@ export enum SYMMETRY {
   VERTICAL
 }
 
-export const mapGen = (width: number, height: number, configs: HideAndSeekConfigs) => {
+export const mapGen = (width: number, height: number, configs: HideAndSeekConfigs, rng: () => number) => {
   let map = new GameMap(width, height, configs);
-  let rng = new seedrandom(configs.seed);
   // vary density by 0.2
   let DENSITY = configs.parameters.DENSITY - 0.1 + 0.2 * rng();
 
@@ -47,28 +46,33 @@ export const mapGen = (width: number, height: number, configs: HideAndSeekConfig
 
   // using game of life to randomly generate half a map
   let arr = [];
-  for (let i = 0; i < height2; i++) {
+  for (let y = 0; y < height2; y++) {
     arr.push([]);
-    for (let j = 0; j < width2; j++) {
+    for (let x = 0; x < width2; x++) {
       
       let type = EMPTY;
-      if (!map.isSeeker(map.map[i][j]) && !map.isHider(map.map[i][j])) {
+      if (!map.hasUnit(x, y) && 
+          !map.hasUnit(x + 1, y) && 
+          !map.hasUnit(x - 1, y) &&
+          !map.hasUnit(x, y + 1) &&
+          !map.hasUnit(x, y - 1)
+          ) {
         if (rng() < DENSITY) {
           type = WALL;
         }
       }
-      arr[i].push(type);
+      arr[y].push(type);
     }
   }
 
-  // simulate GOL
+  // simulate GOL for 2 rounds
   for (let i = 0; i < 2; i++) {
     simulate(arr);
   }
 
   for (let y = 0; y < height2; y++) {
     for (let x = 0; x < width2; x++) {
-      if (arr[y][x] === WALL) {
+      if (arr[y][x] === WALL && map.map[y][x] === EMPTY) {
         map.setWall(x, y);
         if (symmetry === SYMMETRY.HORIZONTAL) {
           map.setWall(width - x - 1, y);
@@ -80,10 +84,51 @@ export const mapGen = (width: number, height: number, configs: HideAndSeekConfig
     }
   }
 
+  // If invalid map, reroll a map
+  if (!validateMap(map)) {
+    return mapGen(width, height, configs, rng);
+  }
+
 
 
 
   return map;
+}
+
+/**
+ * Checks if the game is winnable by seekers and hiders. Performs a BFS looking
+ * for the other units
+ * @param map 
+ */
+const validateMap = (map: GameMap) => {
+  let unit = Array.from(map.idMap.values())[0];
+  // bfs from that unit
+  let unitsReached = new Set();
+  let visitedSet = new Set();
+  let queue = [{x: unit.x, y: unit.y}];
+  unitsReached.add(unit.id);
+  while (queue.length) {
+    if (unitsReached.size === map.idMap.size) {
+      return true;
+    }
+    else {
+      let {x, y} = queue.pop();
+      visitedSet.add(map.hashLoc(x, y));
+      if (map.hasUnit(x, y)) {
+        unitsReached.add(map.map[y][x]);
+      }
+      for (let i = 0; i < MOVE_DELTAS.length; i++) {
+        let delta = MOVE_DELTAS[i];
+        let nx = x + delta[0];
+        let ny = y + delta[1];
+        let hash = map.hashLoc(nx, ny);
+        if (!visitedSet.has(hash) && map.inMap(nx, ny) && !map.isWall(nx, ny)) {
+          queue.push({x: nx, y: ny});
+        }
+      }
+    }
+  }
+  return false;
 }
 
 const simulate = (arr: Array<Array<number>>) => {

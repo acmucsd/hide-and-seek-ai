@@ -86,7 +86,7 @@ class Agent {
     let units = [];
     unitIDsAndCoordinates.forEach((info) => {
       info = info.split("_");
-      let unit = new Unit(info[0], info[1], info[2]);
+      let unit = new Unit(parseInt(info[0]), parseInt(info[1]), parseInt(info[2]));
       units.push(unit);
     });
     this.units = units;

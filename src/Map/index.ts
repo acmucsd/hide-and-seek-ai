@@ -56,6 +56,12 @@ export class GameMap {
   setWater(x: number, y: number) {
 
   }
+  hasUnit(x: number, y: number) {
+    if (this.inMap(x, y)) {
+      return this.map[y][x] != WALL && this.map[y][x] != EMPTY;
+    }
+    return false;
+  }
   isSeeker(cell: number) {
     if (this.idMap.has(cell)) {
 
