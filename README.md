@@ -66,16 +66,22 @@ This will run the liveViewer shown earlier in your terminal at a speed of 0.2 se
 
 This is a game of hide and seek (and tag).
 
-This is a two agent/player game, one player will be the <span style='color: red'>Seeker</span> team, the other will be the Hider team. The AI will play on a 2D Map of dimensions ranging from 16x16 to 24x24 (not necessarily square). The map is composed of empty tiles (0s) and wall tiles (1s), and other numbers represent the ID of the unit on that tile.
+This is a two agent/player game, one player will be the Seeker team, the other will be the Hider team. The AI will play on a 2D Map of dimensions ranging from 16x16 to 24x24 (not necessarily square). The map is composed of empty tiles (0s) and wall tiles (1s), and other numbers represent the ID of the unit on that tile.
 
-Seekers and Hiders are both called `Units`, which can do only two things, move in the North, Northeast, East, ... West, Southwest directions, or stay put and do nothing. If a Hider is adjacent to a Seeker, the Hider is considered to have been tagged by the Seeker and will now be removed from the game. In each round, the AI can send commands to move their seekers (if they are the seeker team) or move their hiders (if they are the hider team) in one direction and only once. (You will get a warning if you try to move a unit multiple times)
+Seekers and Hiders are both called `Units`, which can do only two things, move in the North, Northeast, East, ... West, Southwest directions, or stay put and do nothing. If a Hider is adjacent to a Seeker, the Hider is considered to have been **tagged** by the Seeker and will now be removed from the game. In each round, the AI can send commands to move their seekers (if they are the seeker team) or move their hiders (if they are the hider team) in one direction and only once. (You will get a warning if you try to move a unit multiple times)
 
-The game ends when the max round limit (200) has reached or there are no more hiders left on the map.
+The game ends when the max round limit of 200 has reached or there are no more hiders left on the map. The Seekers win if there are no more hiders on the map. The Hiders win if the round limit is reached and they still have untagged hiders. It's as simple as that.
 
 The game also uses fog of war for all players. Both teams are always given the map layout, which includes the empty and wall tiles, and their own units, along with where their units are. However, you are only given the x, y coordinates of an opposing team's units if at least one of your units can **see** that opposing team's unit. 
 
-Units vision can see as far as 48R^2. R^2 is the euclidean distance but squared. For a visual of how distance in R^2 works, see [this](). Furthermore, walls on the map block a unit's line of sight, and units cannot see behind walls.
+Units vision can see as far as 48R^2. R^2 is the euclidean distance but squared. Furthermore, walls on the map block a unit's line of sight, and units cannot see behind walls. Here are some short examples demonstrating this
+
+The green circle marks the vision range of unit #4. The red numbers are hiders, the blue numbers are seekers. Everything intersected by the green circle and within it is within 48R^2, the vision range, of unit #4
+
+![](assets/visionexample1.png)
+
+The yellow squares are walls. Because of the **walls**, unit #4s line of sight is **blocked** and we have marked the tiles the unit cannot see with **red circles**. For example, the purple line shows the line of sight intersecting a yellow wall and thus being blocked from seeing one of the tiles. The line of sight is the line from the center of a tile to the center of a target tile, and if that line ever intersects a square tile that is a wall, the line of sight is considered to be blocked.
 
 ## Languages
 
-We support Javascript, Python, C, C++, Typescript, and Go. If you want another language, submit an issue here and we will add it.
+We support Javascript, Python, C, C++, Typescript, and Go. If you want another language and there enough demand for it, submit an issue here and we will add it.

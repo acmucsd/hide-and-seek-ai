@@ -186,6 +186,8 @@ export class GameMap {
   }
   /**
    * Returns true if sight is blocked from (x1, y1) and (x2, y2);
+   * 
+   * The "Line of Sight" is measured from the center of cell (x1, y1) to center of cell (x2, y2)
    */
   sightBlocked(x1, y1, x2, y2) {
     let queue = [{x: x1, y: y1}];
@@ -203,7 +205,7 @@ export class GameMap {
       let thisCellsDistance = this.distance(cell.x, cell.y, target.x, target.y);
       visitedSet.add(this.hashLoc(cell.x, cell.y));
       if (this.inMap(cell.x, cell.y)) {
-        if (this.lineIntersectsCell(x1, y1, x2, y2, cell.x, cell.y)) {
+        if (this.lineIntersectsCell(x1 + 0.5, y1 + 0.5, x2 + 0.5, y2 + 0.5, cell.x, cell.y)) {
           // TODO: Optionally, block by other units?
           if (this.map[cell.y][cell.x] !== WALL) {
             // not blocked add more to queue
