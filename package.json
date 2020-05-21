@@ -1,6 +1,6 @@
 {
   "name": "@acmucsd/hide-and-seek-ai",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "The Hide and Seek AI Competition Engine",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -26,5 +26,8 @@
     "colors": "^1.4.0",
     "dimensions-ai": "^2.6.2",
     "seedrandom": "^3.0.5"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
   }
 }
