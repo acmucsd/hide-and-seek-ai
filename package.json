@@ -1,6 +1,6 @@
 {
   "name": "@acmucsd/hide-and-seek-ai",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "The Hide and Seek AI Competition Engine",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
