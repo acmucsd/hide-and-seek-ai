@@ -141,7 +141,6 @@ export default class HideAndSeekDesign extends Design {
     let configs = deepCopy(defaultMatchConfigs);
     configs = deepMerge(configs, match.configs);
     match.configs = configs;
-
     let rng = seedrandom(match.configs.seed)
     // @ts-ignore;
     let params = (<HideAndSeekConfigs>(match.configs)).parameters;
