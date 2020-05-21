@@ -10,6 +10,7 @@ export class Replay {
       id: ""
     },
     idMap: {},
+    idToPositionMap: {},
     frames: [],
     agents: [],
     teams: [],
@@ -55,6 +56,7 @@ export class Replay {
     this.contents.map = JSON.parse(JSON.stringify(map.map));
     map.idMap.forEach((unit) => {
       this.contents.idMap[unit.id] = unit.type;
+      this.contents.idToPositionMap[unit.id] = {x: unit.x, y: unit.y}
     });
   }
   async writeData(moves: Array<Object>, seekerIDs: Array<number>, hiderIDs: Array<number>) {

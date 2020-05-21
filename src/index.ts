@@ -578,42 +578,24 @@ export default class HideAndSeekDesign extends Design {
       let match = data.match;
       let agents = data.agents;
       let teams = data.teams;
+      let idToPosition = data.idToPositionMap;
       for (let i = 0; i < data.frames.length; i++) {
         let round = i + 1;
         let frame = data.frames[i];
         console.clear();
         let { seekerIDs, hiderIDs } = frame;
-        let a = [1,2];
+
         // apply moves
         let { moves } = frame;
-
-        // go through map finding our seekers and hiders and apply moves
-        for (let y = 0 ; y < map.length; y++) {
-          for (let x = 0; x < map[0].length; x++) {
-            let cell = map[y][x];
-            if (cell === EMPTY || cell === WALL) {
-              continue;
-            }
-            for (let k = 0;k < moves.length; k++) {
-              if (moves[k].unitID === cell) {
-                
-                if (moves[k].dir != DIRECTION.STILL) {
-                  // if we foudn where unit is on map
-                  let newPos = Unit.applyDirection(x, y, moves[k].dir);
-                  // console.log('round', round, `move unit [${moves[k].unitID}]`, x, y, 'to', newPos, moves[k].dir);
-                  if (newPos) {
-                    if (newPos.x < 0 || newPos.y < 0 || newPos.x >= map[0].length || newPos.y >= map.length) {
-                      continue;
-                    }
-                    map[newPos.y][newPos.x] = cell;
-                    map[y][x] = EMPTY;
-                    moves.splice(k, 1);
-                    break;
-                  }
-                }
-              }
-            }
-            
+        for (let k = 0;k < moves.length; k++) {
+          let pos = idToPosition[moves[k].unitID];
+          // if we foudn where unit is on map
+          let newPos = Unit.applyDirection(pos.x, pos.y, moves[k].dir);
+          if (newPos) {
+            map[newPos.y][newPos.x] = moves[k].unitID;
+            map[pos.y][pos.x] = EMPTY;
+            idToPosition[moves[k].unitID].x = newPos.x;
+            idToPosition[moves[k].unitID].y = newPos.y;
           }
         }
 

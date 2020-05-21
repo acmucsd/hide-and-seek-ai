@@ -17,11 +17,14 @@ let hideandseek = create(hideandseekdesign, {
 });
 
 let jskit = {file: './kits/js/bot.js', name: 'js-kit'};
+let stillbot = {file: './test/bots/js/stillbot/bot.js', name: 'stillbot'};
 let pykit = {file: './kits/python/bot.py', name: 'py-kit'};
 
-hideandseek.runMatch([jskit, pykit], {
-  delay: 0.2,
-  liveView: false,
+hideandseek.runMatch([stillbot, pykit], {
+  delay: 0.1,
+  liveView: true,
+  randomizeSeeker: false,
+  seed: 348731
 }).then((res) => {
   console.log(res);
 });

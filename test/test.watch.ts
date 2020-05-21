@@ -1,3 +1,3 @@
 import HideAndSeekDesign from '../src';
-
-HideAndSeekDesign.watch('./replays/match_MApIIKGfrB0g.json', 0.2);
+let n = 'replays/match_UIkqVnw0ulMS.json';
+HideAndSeekDesign.watch('./' + n, 0.1);

@@ -1,6 +1,6 @@
 {
   "name": "@acmucsd/hide-and-seek-ai",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "The Hide and Seek AI Competition Engine",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -29,5 +29,6 @@
   },
   "devDependencies": {
     "dotenv": "^8.2.0"
-  }
+  },
+  "bin": {"hide-and-seek": "./lib/watch.js"}
 }
