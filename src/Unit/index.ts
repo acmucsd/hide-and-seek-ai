@@ -15,6 +15,25 @@ export abstract class Unit {
   canMove(dir: DIRECTION, map: GameMap) {
     let newx = this.x;
     let newy = this.y;
+    let newPos = Unit.applyDirection(this.x, this.y, dir);
+    if (newPos){
+      newx = newPos.x;
+      newy = newPos.y;
+      if (!map.inMap(newx, newy)) {
+        return false;
+      }
+      // check for collision
+      if (map.isEmpty(newx, newy)) {
+        // can move, then move unit
+        return {x: newx, y: newy};
+      }
+    }
+    return false;
+
+  }
+  static applyDirection(x: number, y: number, dir: DIRECTION) {
+    let newx = x;
+    let newy = y;
     switch(dir) {
       case DIRECTION.NORTH:
         newy -=1;
@@ -50,14 +69,6 @@ export abstract class Unit {
         console.error("ERROR, incorrect direction " + dir + " given");
         return false;
     }
-    if (!map.inMap(newx, newy)) {
-      return false;
-    }
-    // check for collision
-    if (map.isEmpty(newx, newy)) {
-      // can move, then move unit
-      return {x: newx, y: newy};
-    }
-
+    return { x: newx, y: newy};
   }
 }

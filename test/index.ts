@@ -29,10 +29,11 @@ let bot = {file: './kits/js/bot.js', name: 'bot'};
 hideandseek.runMatch(botlist, {
   delay: 0.2,
   randomizeSeeker: true,
-  liveView: true,
-  seed: 5113
+  liveView: false,
+  seed: 51131
 }).then((res) => {
   console.log(res);
 });
 
+HideAndSeekDesign.watch('./replays/match_0gd7DHGLXUzL.json', 0.1);
 

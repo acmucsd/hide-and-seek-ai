@@ -1,5 +1,5 @@
 import { Design, Match, MatchEngine, MatchError, FatalError, Tournament } from 'dimensions-ai';
-import { GameMap, EMPTY, MOVE_DELTAS } from './Map';
+import { GameMap, EMPTY, MOVE_DELTAS, WALL } from './Map';
 import { Seeker } from './Seeker';
 import { Hider } from './Hider';
 import { mapGen } from './Map/gen';
@@ -10,6 +10,7 @@ import { deepMerge } from 'dimensions-ai/lib/utils/DeepMerge';
 import fs from 'fs';
 import { Replay } from './Replay';
 import path from 'path';
+import { Unit } from './Unit';
 
 export interface GameResults {
   winner: string,
@@ -178,7 +179,8 @@ export default class HideAndSeekDesign extends Design {
 
     let state: MatchState = match.state;
     state.replay = new Replay(path.join(match.configs.replayDirectory, `${match.name}.json`));
-
+    state.replay.writeMap(gamemap);
+    
     if (match.agents.length != 2) {
       throw new FatalError('Can only have 2 agents!');
     }
@@ -243,8 +245,10 @@ export default class HideAndSeekDesign extends Design {
         await match.send(mapString[j], i);
       }
     }
-
-    state.replay.writeMap(gamemap);
+    state.replay.writeMeta(match);
+    // state.replay.writeAgent(state.agentIDToTeam);
+    state.replay.writeTeam(state.teamToAgentID);
+    
   }
 
   async update(match: Match, commands: Array<MatchEngine.Command> ): Promise<Match.Status> {
@@ -304,7 +308,7 @@ export default class HideAndSeekDesign extends Design {
         successfulMoves.push(cmd);
       }
     });
-    state.replay.writeMoves(successfulMoves);
+    
     
     let { seekerIDs, hiderIDs } = this.getIDs(gamemap);
     let seekerLocationSet = new Set();
@@ -327,11 +331,12 @@ export default class HideAndSeekDesign extends Design {
       }
     });
     hiderIDs = this.getIDs(gamemap).hiderIDs;
-
+    
+    state.replay.writeData(successfulMoves, seekerIDs, hiderIDs);
     // print display if enabled
     if (match.configs.liveView) {
       this.printDisplay(match);
-      await this.sleep(match.configs.delay * 1000);
+      await HideAndSeekDesign._sleep(match.configs.delay * 1000);
     }
 
     if (this.gameOver(match)) {
@@ -372,7 +377,7 @@ export default class HideAndSeekDesign extends Design {
     return Match.Status.RUNNING;
   }
 
-  async sleep (time: number) {
+  static async _sleep (time: number) {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve();
@@ -391,26 +396,8 @@ export default class HideAndSeekDesign extends Design {
     console.log(`Match: ${match.name} | Round # - ${state.round}`);
     console.log(`Player: ${match.agents[state.teamToAgentID.get(SEEKER)].name} | Seeker # -`.cyan, seekerIDs);
     console.log(`Player: ${match.agents[state.teamToAgentID.get(HIDER)].name} | Hider # -`.red, hiderIDs);
-    // console.log(`Map Info: ${gamemap.width()}x${gamemap.height()}`);
-    for (let i = 0 ; i < gamemap.height(); i++) {
-      let str = [];
-      for (let j = 0; j < gamemap.width(); j++) {
-        let cell = gamemap.map[i][j];
-        if (gamemap.isSeeker(cell)) {
-          str.push(`${cell}`.cyan);
-        }
-        else if (gamemap.isHider(cell)) {
-          str.push(`${cell}`.red);
-        }
-        else if (gamemap.isWall(j, i)) {
-          str.push(`▩`.yellow);
-        }
-        else {
-          str.push(`${cell}`);
-        }
-      }
-      console.log(`[${str.join(" ")}]`);
-    }
+    console.log(`Map Size: ${gamemap.width()}x${gamemap.height()}`);
+    HideAndSeekDesign._printMap(gamemap.map, seekerIDs, hiderIDs);
   }
 
   async getResults(match: Match): Promise<GameResults> {
@@ -518,5 +505,87 @@ export default class HideAndSeekDesign extends Design {
       return {ranks: [{rank: 1, agentID: 0}, {rank: 1, agentID: 1}]}
     }
     return {ranks: [{rank: 1, agentID: results.winningID}, {rank: 2, agentID: results.losingID}]}
+  }
+
+  /**
+   * Reads in a replay file and plays it
+   * @param path 
+   */
+  static async watch(path: string, delay: number = 0.2) {
+    fs.readFile(path, "utf8", async (err, data: any) => {
+      data = JSON.parse(data);
+      let map = data.map;
+      let match = data.match;
+      let agents = data.agents;
+      let teams = data.teams;
+      for (let i = 0; i < data.frames.length; i++) {
+        let round = i + 1;
+        let frame = data.frames[i];
+        console.clear();
+        let { seekerIDs, hiderIDs } = frame;
+        let a = [1,2];
+        // apply moves
+        let { moves } = frame;
+
+        // go through map finding our seekers and hiders and apply moves
+        for (let y = 0 ; y < map.length; y++) {
+          for (let x = 0; x < map[0].length; x++) {
+            let cell = map[y][x];
+            if (cell === EMPTY || cell === WALL) {
+              continue;
+            }
+            for (let k = 0;k < moves.length; k++) {
+              if (moves[k].unitID === cell) {
+                
+                if (moves[k].dir != DIRECTION.STILL) {
+                  // if we foudn where unit is on map
+                  let newPos = Unit.applyDirection(x, y, moves[k].dir);
+                  // console.log('round', round, `move unit [${moves[k].unitID}]`, x, y, 'to', newPos, moves[k].dir);
+                  if (newPos) {
+                    if (newPos.x < 0 || newPos.y < 0 || newPos.x >= map[0].length || newPos.y >= map.length) {
+                      continue;
+                    }
+                    map[newPos.y][newPos.x] = cell;
+                    map[y][x] = EMPTY;
+                    moves.splice(k, 1);
+                    break;
+                  }
+                }
+              }
+            }
+            
+          }
+        }
+
+        console.log(`Match: ${match.name} | Round # - ${round}`);
+        console.log(`Player: ${agents[teams[0].agentID].name} | Seeker # -`.cyan, seekerIDs);
+        console.log(`Player: ${agents[teams[0].agentID].name} | Hider # -`.red, hiderIDs);
+        console.log(`Map Size: ${map[0].length}x${map.length}`);
+        HideAndSeekDesign._printMap(map, seekerIDs, hiderIDs);
+        await HideAndSeekDesign._sleep(delay * 1000);
+      }
+    });
+  }
+
+  static  _printMap(map: Array<Array<number>>, seekerIDs: Array<number>, hiderIDs: Array<number>) {
+    for (let i = 0 ; i < map.length; i++) {
+      let str = [];
+      for (let j = 0; j < map[0].length; j++) {
+        let cell = map[i][j];
+        if (seekerIDs.indexOf(cell) != -1) {
+          str.push(`${cell}`.cyan);
+        }
+        else if (hiderIDs.indexOf(cell) != -1) {
+          str.push(`${cell}`.red);
+        }
+        else if (cell === WALL) {
+          str.push(`▩`.yellow);
+        }
+        else {
+          str.push(`${EMPTY}`);
+        }
+      }
+      console.log(`[${str.join(" ")}]`);
+    }
   }
 }
