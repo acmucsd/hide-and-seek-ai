@@ -395,7 +395,7 @@ export default class HideAndSeekDesign extends Design {
     console.log(`Match: ${match.name} | Round # - ${state.round}`);
     console.log(`Player: ${match.agents[state.teamToAgentID.get(SEEKER)].name} | Seeker # -`.cyan, seekerIDs);
     console.log(`Player: ${match.agents[state.teamToAgentID.get(HIDER)].name} | Hider # -`.red, hiderIDs);
-    console.log(`Map Size: ${gamemap.width()}x${gamemap.height()}`);
+    console.log(`Map Size: ${gamemap.width()}x${gamemap.height()} | Seed: ${match.configs.seed}`);
     HideAndSeekDesign._printMap(gamemap.map, seekerIDs, hiderIDs);
   }
 
@@ -558,8 +558,8 @@ export default class HideAndSeekDesign extends Design {
 
         console.log(`Match: ${match.name} | Round # - ${round}`);
         console.log(`Player: ${agents[teams[0].agentID].name} | Seeker # -`.cyan, seekerIDs);
-        console.log(`Player: ${agents[teams[0].agentID].name} | Hider # -`.red, hiderIDs);
-        console.log(`Map Size: ${map[0].length}x${map.length}`);
+        console.log(`Player: ${agents[teams[1].agentID].name} | Hider # -`.red, hiderIDs);
+        console.log(`Map Size: ${map[0].length}x${map.length} | Seed: ${data.seed}`);
         HideAndSeekDesign._printMap(map, seekerIDs, hiderIDs);
         await HideAndSeekDesign._sleep(delay * 1000);
       }

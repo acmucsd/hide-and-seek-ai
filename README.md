@@ -17,7 +17,7 @@ npm install dimensions-ai @acmucsd/hide-and-seek-ai
 Once that is done, create a file called `run.js` and add the following
 
 ```js
-const HideAndSeekDesign = require('../lib').default;
+const HideAndSeekDesign = require('@acmucsd/hide-and-seek-ai').default;
 const Dimension = require('dimensions-ai');
 let hideandseekdesign = new HideAndSeekDesign('hide-and-seek');
 let hideandseek = Dimension.create(hideandseekdesign, {
