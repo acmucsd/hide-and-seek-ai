@@ -100,7 +100,7 @@ export const defaultMatchConfigs: HideAndSeekConfigs = {
   liveView: true,
   delay: 0.2,
   roundLimit: 200,
-  seed: 30,
+  seed: Math.floor(Math.random()*1000000),
   replayDirectory: './replays',
   mode: GameModes.tag,
   randomizeSeeker: true,
@@ -141,7 +141,7 @@ export default class HideAndSeekDesign extends Design {
     let rng = seedrandom(match.configs.seed)
     // @ts-ignore;
     let params = (<HideAndSeekConfigs>(match.configs)).parameters;
-
+    
     // create map
     let width = 16;
     let height = 16;
@@ -157,7 +157,6 @@ export default class HideAndSeekDesign extends Design {
         height -= 1;
       }
     }
-    console.log(width, height);
     let gamemap = mapGen(width, height, configs);
     let seekerCount = 1;
     let hiderCount = 1;

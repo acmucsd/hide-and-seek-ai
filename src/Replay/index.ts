@@ -12,7 +12,8 @@ export class Replay {
     idMap: {},
     frames: [],
     agents: [],
-    teams: []
+    teams: [],
+    seed: 0
   }
   constructor(public path: string) {
     fs.writeFileSync(this.path, '');
@@ -21,6 +22,7 @@ export class Replay {
     let state: MatchState = match.state;
     this.contents.match.name = match.name;
     this.contents.match.id = match.id;
+    this.contents.seed = match.configs.seed;
     this.contents.agents = match.agents.map((agent) => {
       return {
         name: agent.name,
@@ -50,9 +52,7 @@ export class Replay {
     });
   }
   async writeMap(map: GameMap) {
-    // fs.appendFileSync(this.path, JSON.stringify(obj));
     this.contents.map = JSON.parse(JSON.stringify(map.map));
-    console.log(this.contents.map);
     map.idMap.forEach((unit) => {
       this.contents.idMap[unit.id] = unit.type;
     });
