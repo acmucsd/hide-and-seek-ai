@@ -1,16 +1,16 @@
-const HideAndSeekDesign = require('../lib').default;
+const HideAndSeekDesign = require('@acmucsd/hide-and-seek-ai').default;
 const Dimension = require('dimensions-ai');
 require('dotenv').config()
 const { MongoDB, GCloudStorage, Logger } = Dimension;
-let hideandseekdesign = new HideAndSeekDesign('hide-and-seek-v1.2.0', {
+let hideandseekdesign = new HideAndSeekDesign('hide-and-seek-v1.6.0', {
   engineOptions: {
     noStdErr: true,
     timeout: {
       max: 2000
     },
     memory: {
-      limit: 50000000,
-      active: false
+      limit: 100000000, // ~ 100 mb
+      active: true // if we want this to be active, MAKE SURE TO CHANGE PIDUSAGE TO USE PS INSTEAD OF PROCFILE
     }
   }
 });
