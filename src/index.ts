@@ -109,7 +109,7 @@ export const defaultMatchConfigs: HideAndSeekConfigs = {
   liveView: true,
   delay: 0.2,
   roundLimit: 200,
-  seed: Math.floor(Math.random()*1000000),
+  seed: 0,
   replayDirectory: './replays',
   mode: GameModes.tag,
   randomizeSeeker: true,
@@ -148,6 +148,7 @@ export default class HideAndSeekDesign extends Design {
     
     
     let configs = deepCopy(defaultMatchConfigs);
+    configs.seed = Math.floor(Math.random()*1000000);
     configs = deepMerge(configs, match.configs);
     match.configs = configs;
     let rng = seedrandom(match.configs.seed)
