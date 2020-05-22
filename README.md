@@ -82,6 +82,12 @@ The green circle marks the vision range of unit #4. The red numbers are hiders, 
 
 The yellow squares are walls. Because of the **walls**, unit #4s line of sight is **blocked** and we have marked the tiles the unit cannot see with **red circles**. For example, the purple line shows the line of sight intersecting a yellow wall and thus being blocked from seeing one of the tiles. The line of sight is the line from the center of a tile to the center of a target tile, and if that line ever intersects a square tile that is a wall, the line of sight is considered to be blocked.
 
+### Computation Limits
+
+Each bot has up to 1000ms of computation time, regardless of language. (Even then, you can probably write a really good bot in python compared to one in C). This time is calculated as it runs on our Google Cloud Compute Engines (4 cpus, 4 GB RAM).
+
+Furthermore, each bot is limited to 100MB of RAM. This should generally be more than enough memory. We will expand this as needed.
+
 ## Languages
 
 We support Javascript, Python, C, C++, Typescript, and Go. If you want another language and there enough demand for it, submit an issue here and we will add it.
