@@ -77,6 +77,14 @@ export interface HideAndSeekConfigs {
    * @default `true`
    */
   randomizeSeeker: boolean,
+
+  /**
+   * Whether or not to store a replay
+   * 
+   * @default `false`
+   */
+  storeReplay: boolean
+
   parameters: {
     /**
      * R^2 distance of how far units can see
@@ -105,6 +113,7 @@ export const defaultMatchConfigs: HideAndSeekConfigs = {
   replayDirectory: './replays',
   mode: GameModes.tag,
   randomizeSeeker: true,
+  storeReplay: true,
   parameters: {
     VISION_RANGE: 48,
     DENSITY: 0.35,
@@ -180,8 +189,10 @@ export default class HideAndSeekDesign extends Design {
     }
 
     let state: MatchState = match.state;
-    state.replay = new Replay(path.join(match.configs.replayDirectory, `${match.name}.json`));
-    state.replay.writeMap(gamemap);
+    if (match.configs.storeReplay) {
+      state.replay = new Replay(path.join(match.configs.replayDirectory, `${match.name}.json`));
+      state.replay.writeMap(gamemap);
+    }
     
     if (match.agents.length != 2) {
       throw new FatalError('Can only have 2 agents!');
@@ -238,8 +249,10 @@ export default class HideAndSeekDesign extends Design {
       }
       await match.sendAll(strs.join(","));
     }
-    state.replay.writeMeta(match);
-    state.replay.writeTeam(state.teamToAgentID);
+    if (match.configs.storeReplay) {
+      state.replay.writeMeta(match);
+      state.replay.writeTeam(state.teamToAgentID);
+    }
     
   }
 
@@ -336,7 +349,9 @@ export default class HideAndSeekDesign extends Design {
     // if any bot was terminated, we finish the match and save what we have so far
     if (terminatedIDs.length > 0) {
       state.terminatedIDs = terminatedIDs;
-      state.replay.writeOut();
+      if (match.configs.storeReplay) {
+        state.replay.writeOut();
+      }
       return Match.Status.FINISHED;
     }
 
@@ -411,7 +426,9 @@ export default class HideAndSeekDesign extends Design {
     hiderIDs = this.getIDs(gamemap).hiderIDs;
     
     // save moves data
-    state.replay.writeData(successfulMoves, seekerIDs, hiderIDs);
+    if (match.configs.storeReplay) {
+      state.replay.writeData(successfulMoves, seekerIDs, hiderIDs);
+    }
     
     // print display if enabled
     if (match.configs.liveView) {
@@ -421,7 +438,9 @@ export default class HideAndSeekDesign extends Design {
 
     /** Check if game over */
     if (this.gameOver(match)) {
-      state.replay.writeOut();
+      if (match.configs.storeReplay) {
+        state.replay.writeOut();
+      }
       return Match.Status.FINISHED;
     }
 
@@ -471,7 +490,9 @@ export default class HideAndSeekDesign extends Design {
       terminatedIDs: []
     }
     let state: MatchState = match.state;
-    result.replayFile = state.replay.path;
+    if (match.configs.storeReplay) {
+      result.replayFile = state.replay.path;
+    }
     // store who is seeker or hider
     let a0team = state.agentIDToTeam.get(0);
     if (a0team === SEEKER) {
