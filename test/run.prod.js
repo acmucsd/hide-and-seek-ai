@@ -9,7 +9,8 @@ let hideandseekdesign = new HideAndSeekDesign('hide-and-seek-v1.2.0', {
       max: 2000
     },
     memory: {
-      limit: 50000000
+      limit: 50000000,
+      active: false
     }
   }
 });
@@ -46,11 +47,12 @@ Promise.all(promises).then(() => {
     },
     agentsPerMatch: [2],
     tournamentConfigs: {
-      maxConcurrentMatches: 1,
+      maxConcurrentMatches: 6,
     },
     resultHandler: HideAndSeekDesign.trueskillResultHandler,
     id: 'a0Zlpa'
   });
+  tourney.run();
 })
 
 // cgroups
