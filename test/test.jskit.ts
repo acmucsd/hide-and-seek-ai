@@ -20,7 +20,7 @@ let jskit = {file: './kits/js/bot.js', name: 'js-kit'};
 
 hideandseek.runMatch([jskit, jskit], {
   delay: 0.2,
-  liveView: true,
+  liveView: false,
   seed: 32
 }).then((res) => {
   console.log(res);

@@ -1,4 +1,4 @@
-import { Design, Match, MatchEngine, MatchError, FatalError, Tournament, MatchWarn } from 'dimensions-ai';
+import { Design, Match, MatchEngine, MatchError, FatalError, Tournament, MatchWarn, DesignOptions } from 'dimensions-ai';
 import { GameMap, EMPTY, MOVE_DELTAS, WALL } from './Map';
 import { Seeker } from './Seeker';
 import { Hider } from './Hider';
@@ -11,6 +11,7 @@ import fs from 'fs';
 import { Replay } from './Replay';
 import path from 'path';
 import { Unit } from './Unit';
+import { DeepPartial } from 'dimensions-ai/lib/utils/DeepPartial';
 
 export interface GameResults {
   winner: string,
@@ -127,6 +128,20 @@ export const defaultMatchConfigs: HideAndSeekConfigs = {
 
 export default class HideAndSeekDesign extends Design {
 
+  constructor(name: string, options: DeepPartial<DesignOptions>) {
+    let defaults = {
+      engineOptions: {
+        memory: {
+          limit: 1024 * 1024 * 100
+        },
+        timeout: {
+          max: 1000
+        }
+      }
+    }
+    deepMerge(defaults, options);
+    super(name, options);
+  }
   /**
    * Gets the seekerIDs and hiderIDs from a gamemap
    */
