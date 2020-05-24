@@ -14,6 +14,8 @@ If you have issues with writing a bot, uploading a bot, bugs in the engine, feel
 
 ## Getting Started
 
+First ensure you are running Node v12 or above and have npm installed. Check this by running `node -v` and `npm -v`. If you don't have them, see [this section](#setup) for setting up your environment to start running hide and seek games.
+
 First install all files necessary, run the following
 
 ```bash
@@ -107,8 +109,11 @@ Furthermore, each bot is limited to 100MB of RAM. This should generally be more 
 
 ## Languages
 
-We support Javascript, Python, C, C++, Typescript, and Go. If you want another language and there enough demand for it, submit an issue here and we will add it.
+We support Javascript, Python, C, C++, and Typescript. If you want another language and there enough demand for it, submit an issue here and we will add it.
 
+## Setup 
+
+See this: https://nodejs.org/en/download/
 
 ## Javascript API
 
