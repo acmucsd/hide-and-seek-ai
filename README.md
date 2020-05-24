@@ -31,7 +31,7 @@ Download a starter kit of your choice from this repository. We will be using the
 hide-and-seek kits/js/bot.js kits/js/bot.js --live=true
 ```
 
-This will run the match live in your terminal. Set `--live=false` to make the match skip the live view and run as fast as possible.
+This will run the match live in your terminal. Set `--live=false` to make the match skip the live view and run as fast as possible. Furthermore, ensure you have the correct tooling to run your bots. E.g. if you have a java bot, make sure `javac` works. See [this](#how-do-we-run-your-bots) for info on what tooling is required for each bot language.
 
 Matches will create a replay file of the format of `match_<some long id>.json` in the replays folder. To watch the replay, run
 
