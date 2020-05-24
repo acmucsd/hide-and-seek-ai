@@ -2,7 +2,7 @@
 
 Welcome to the Hide and Seek AI competition. This is the first ACM AI at UCSD prototype so expect *many* bugs but also lots of fun! So what is the game?
 
-It's like hide and seek and also tag. Your AI will need to be able to play as both the chaser and the hider. Your AI's objective as the seeker is to find the hiders and tag them. Your AI's objective as the hider is to dodge the seekers and hide from them.
+It's like hide and seek and also tag. Your AI will need to be able to play as both the seeker and the hider. Your AI's objective as the seeker is to find the hiders and tag them. Your AI's objective as the hider is to dodge the seekers and hide from them.
 
 Read the [specs](#specs) for specific information on how the competition works. Moreover, we are enforcing a set of [rules](#rules) we ask every competitor to abide by.
 
