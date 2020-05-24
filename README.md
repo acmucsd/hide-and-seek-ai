@@ -6,9 +6,9 @@ It's like hide and seek and also tag. Your AI will need to be able to play as bo
 
 Read the [specs](#specs) for specific information on how to play and what the rules are
 
-Keep reading to see how to get started really quick and [run a match](#run-a-match) to test your bots!
+Keep reading to see how to get started really quick and compete with your bots!
 
-Once you have a bot, make sure to go to ai.acmucsd.com/ to register an account and upload your bot there! Make sure to follow the upload instructions.
+Once you have a bot, make sure to go to ai.acmucsd.com/ to register an account and upload your bot there! Make sure to follow the upload instructions, and see [this](#submission) for help on how to zip your files correctly and upload them.
 
 ## Getting Started
 
@@ -65,13 +65,27 @@ The green circle marks the vision range of unit #4. The red numbers are hiders, 
 
 The yellow squares are walls. Because of the **walls**, unit #4s line of sight is **blocked** and we have marked the tiles the unit cannot see with **red circles**. For example, the purple line shows the line of sight intersecting a yellow wall and thus being blocked from seeing one of the tiles. The line of sight is the line from the center of a tile to the center of a target tile, and if that line ever intersects a square tile that is a wall, the line of sight is considered to be blocked.
 
-### Computation Limits
+## Submission
 
-Each bot has up to 1000ms of computation time, regardless of language. (Even then, you can probably write a really good bot in python compared to one in C). This time is calculated as it runs on our Google Cloud Compute Engines (4 cpus, 4 GB RAM).
+The competition accepts only zip files. Make sure to follow the starter kit structure provided in the [`kits`](https://github.com/acmucsd/hide-and-seek-ai/tree/master/kits) folder of this repository. Make sure to recursively zip your bot. Depending on your system, read the instructions for help on how to submit your bot
 
-Furthermore, each bot is limited to 100MB of RAM. This should generally be more than enough memory. We will expand this as needed.
+### Linux / MacOSx
 
-### How do we run your bots?
+On Mac, just select all files in the same folder as your `bot.js` file and right click and click compress and submit that. For the Bot Path field on the form, make sure to put in `bot.js` as the input. If your main file is called something else, put that instead in the Both Path field on the form.
+
+To zip on the command line, navigate to the folder/directory with your mainfile `bot.js` or whatever name you have set it to, and run the following
+
+```
+zip -r bot.zip .
+```
+
+Submit the bot.zip file and pass in `bot.js` or what your main file is named as into the Bot Path field on the form.
+
+### Windows
+
+Workng on it
+
+## How do we run your bots?
 
 For the most part, just stick to our documentation ont eh 
 
@@ -82,6 +96,12 @@ For Python, we are running Python 3.7.7, and call `python <your_file>.py`
 For Java, we are using OpenJDK 11.0.7, we are compiling your code by calling `javac <your_main_file>.java` and running `java <your_main_file>`
 
 For C++, we compile your code with `g++` by calling `g++ -std=c++11 -O3 -o <you_main_file>.out <your_main_file>` and run `./<your_main_file>.out`
+
+### Computation Limits
+
+Each bot has up to 1000ms of computation time, regardless of language. (Even then, you can probably write a really good bot in python compared to one in C). This time is calculated as it runs on our Google Cloud Compute Engines (4 cpus, 4 GB RAM).
+
+Furthermore, each bot is limited to 100MB of RAM. This should generally be more than enough memory. We will expand this as needed.
 
 ## Languages
 
