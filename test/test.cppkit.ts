@@ -20,7 +20,7 @@ let cppkit = {file: './kits/c++/bot.cpp', name: 'cpp-kit'};
 
 hideandseek.runMatch([cppkit, cppkit], {
   delay: 0.2,
-  liveView: false,
+  liveView: true,
   seed: 32
 }).then((res) => {
   console.log(res);

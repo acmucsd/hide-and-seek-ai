@@ -42,8 +42,10 @@ namespace kit {
         int x;
         int y;
         Unit(int id, int x, int y, int distance): id(id), x(x), y(y), distance(distance) {};
+        
         string move(direction dir) {
-            return id + "_" + dir;
+            // cerr << id << dir;
+            return to_string(id) + "_" + to_string(dir);
         }
     };
     const static int SEEKER = 2;
@@ -133,7 +135,7 @@ namespace kit {
 
         }
         // end a turn
-        static void end_turn() {
+        void end_turn() {
             cout << "D_FINISH" << std::endl << std::flush;
         }
 
@@ -155,35 +157,35 @@ namespace kit {
         int newy = y;
         switch(dir) {
             case 0:
-            newy -=1;
-            break;
+                newy -=1;
+                break;
             case 1:
-            newy -=1;
-            newx +=1;
-            break;
+                newy -=1;
+                newx +=1;
+                break;
             case 2:
-            newx += 1;
-            break;
+                newx += 1;
+                break;
             case 3:
-            newx += 1;
-            newy += 1;
-            break;
+                newx += 1;
+                newy += 1;
+                break;
             case 4:
-            newy += 1;
-            break;
+                newy += 1;
+                break;
             case 5:
-            newy += 1;
-            newx -= 1;
-            break;
+                newy += 1;
+                newx -= 1;
+                break;
             case 6:
-            newx -= 1;
-            break;
+                newx -= 1;
+                break;
             case 7:
-            newx -= 1;
-            newy -= 1;
-            break;
+                newx -= 1;
+                newy -= 1;
+                break;
             case 8:
-            break;
+                break;
         }
         return make_pair(newx, newy);
     };
