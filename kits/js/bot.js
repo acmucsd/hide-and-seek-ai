@@ -35,7 +35,7 @@ agent.initialize().then(async () => {
         }
         else {
           // make the unit move in direction randomDirection
-          // commands.push(unit.move(randomDirection));
+          commands.push(unit.move(randomDirection));
         }
       });
     }
