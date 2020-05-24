@@ -212,3 +212,7 @@ This will run the liveViewer shown earlier in your terminal at a speed of 0.2 se
 Java has known to be a little bit unstable, there are times when it might not communicate with the matchengine correctly and timeout. However, this is rare (once in 10,000 matches on the server)
 
 ## FAQ
+
+If you can't install something, try `sudo npm install`. 
+
+If it says agent directory error when providing paths for running a match, try prepending the paths with `./`. Fixes bugs where you pass in something like `bot.py` or `bot.js`.
