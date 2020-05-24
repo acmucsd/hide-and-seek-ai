@@ -168,7 +168,10 @@ let hideandseekdesign = new HideAndSeekDesign('hide-and-seek');
 let hideandseek = Dimension.create(hideandseekdesign, {
   activateStation: false,
   observe: false,
-  name: "Hide and Seek"
+  name: "Hide and Seek",
+  agentOptions: {
+    runCommands: {'.py': ['python3']}
+  }
 });
 ```
 
