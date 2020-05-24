@@ -55,7 +55,7 @@ This is a game of hide and seek (and tag).
 
 This is a two agent/player game, one player will be the Seeker team, the other will be the Hider team. The AI will play on a 2D Map of dimensions ranging from 16x16 to 24x24 (not necessarily square). The map is composed of empty tiles (0s) and wall tiles (1s), and other numbers represent the ID of the unit on that tile.
 
-Seekers and Hiders are both called `Units`, which can do only two things, move in the North, Northeast, East, ... West, Southwest directions, or stay put and do nothing. If a Hider is adjacent to a Seeker, the Hider is considered to have been **tagged** by the Seeker and will now be removed from the game. In each round, the AI can send commands to move their seekers (if they are the seeker team) or move their hiders (if they are the hider team) in one direction and only once. (You will get a warning if you try to move a unit multiple times)
+Seekers and Hiders are both called `Units`, which can do only two things, move one unit in the North, Northeast, East, ... West, Southwest directions, or stay put and do nothing. If a Hider is adjacent to a Seeker, the Hider is considered to have been **tagged** by the Seeker and will now be removed from the game. In each round, the AI can send commands to move their seekers (if they are the seeker team) or move their hiders (if they are the hider team) in one direction and only once. (You will get a warning if you try to move a unit multiple times)
 
 The game ends when the max round limit of 200 has reached or there are no more hiders left on the map. The Seekers win if there are no more hiders on the map. The Hiders win if the round limit is reached and they still have untagged hiders. It's as simple as that.
 
@@ -117,7 +117,22 @@ We support Javascript, Python, C, C++, and Typescript. If you want another langu
 
 ## Bot API
 
+Because there are multiple languages possible, you will need to read the documentation in the starter kits for the exact syntax of the api.
 
+`agent.map` is a 2D dynamic array. `agent.map[y][x]` is the value at the coordinate `(x, y)`. It can have the following values
+- `0`: Represents an empty tile a unit can move on
+- `1`: Represents a wall tile a unit cannot move on or see past
+- Other: Represents an ID of a unit, which can be your own team's unit ids or the other team's (if in vision)
+
+`agent.units` and `agent.opposingUnits` are dynamic arrays of class `Unit`. Each element in the array is a `Unit` type. `agent.units` contains units on your team, `agent.opposingUnits` contains all units on the other team that are in vision.
+
+`Unit` is a class representing a `Unit` in the match. 
+- `Unit.id` is the id of the unit
+- `Unit.x` is the x coordinate of the unit's position
+- `Unit.y` is the y coordinate of the unit's position
+- `Unit.distance` is the distance away the unit is from the nearest opposing unit. This is always `-1` if you don't own this unit
+
+`applyDirection` or `apply_direction` applies a direction to a coordinate `x, y`. E.g `applyDirection(0, 1, Direction.NORTH)` returns `[0, 0]` as moving north causes `y` to decrease by 1.
 
 ## Setup 
 
