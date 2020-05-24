@@ -116,6 +116,7 @@ Add the following code
 hideandseek.runMatch(['./kits/js/bot.js', './kits/js/bot.js'], {
   delay: 0.2,
   liveView: true,
+  seed: 123
 }).then((res) => {
   console.log(res);
 });
@@ -123,7 +124,9 @@ hideandseek.runMatch(['./kits/js/bot.js', './kits/js/bot.js'], {
 
 With `liveView` set to `true` as opposed to `false`, the match will run live on your terminal and you can watch it. Set it to `false` and it will run much faster but you will have to watch it through the replay file
 
-`delay: 0.2` sets the speed of the live viewer to 0.2 seconds per frame (5 FPS)
+`delay: 0.2` sets the speed of the live viewer to 0.2 seconds per frame (1/0.2 = 5 FPS)
+
+`seed: 123` sets the match seed. Removing this field will make the seed be random.
 
 ### Watch Replays
 
