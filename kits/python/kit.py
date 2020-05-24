@@ -58,10 +58,7 @@ class Unit:
         self.id = id
         self.x = x
         self.y = y
-        if (dist != -1):
-            self.dist = dist
-        else:
-            self.dist = None
+        self.distance = dist;
 
     def move(self, dir: int) -> str:
         return "%d_%d" % (self.id, dir)

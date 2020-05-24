@@ -100,6 +100,7 @@ public class Agent {
         }
         
         round_number = 0;
+        updateMapWithIDs();
     }
     /**
      * Resets map back to 0s and 1s, the empty and wall tiles

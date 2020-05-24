@@ -21,7 +21,7 @@ agent.initialize().then(async () => {
         let randomDirection = Math.floor(Math.random() * ALL_DIRECTIONS.length);
 
         // unit.id is id of the unit
-        // unit.x unit.y are its coordinate
+        // unit.x unit.y are its coordinates, unit.distance is distance away from nearest opponent
         // map is the 2D map of what you can see. 
         // map[i][j] returns whats on that tile, 0 = empty, 1 = wall, 
         // anything else is then the id of a unit which can be yours or the opponents

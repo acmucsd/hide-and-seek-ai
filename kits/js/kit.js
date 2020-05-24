@@ -21,7 +21,7 @@ const Parser = require('./parser');
 const parse = new Parser(',');
 
 class Unit {
-  constructor(id, x, y, distance = undefined) {
+  constructor(id, x, y, distance = -1) {
     this.id = id;
     this.x = x;
     this.y = y;
