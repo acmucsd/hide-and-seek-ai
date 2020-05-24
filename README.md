@@ -88,6 +88,18 @@ Each bot has up to 1000ms of computation time, regardless of language. (Even the
 
 Furthermore, each bot is limited to 100MB of RAM. This should generally be more than enough memory. We will expand this as needed.
 
+### How do we run your bots?
+
+For the most part, just stick to our documentation ont eh 
+
+For JS, we are running NodeJS v12, and call `node <your_file>.js`
+
+For Python, we are running Python 3.7.7, and call `python <your_file>.py`
+
+For Java, we are compiling your code by calling `javac <your_main_file>.java` and running `java <your_main_file>`
+
+For C++, we compile your code with g++ by calling `g++` and compiling out to
+
 ## Languages
 
 We support Javascript, Python, C, C++, Typescript, and Go. If you want another language and there enough demand for it, submit an issue here and we will add it.
