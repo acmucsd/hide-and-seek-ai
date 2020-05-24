@@ -96,9 +96,9 @@ For JS, we are running NodeJS v12, and call `node <your_file>.js`
 
 For Python, we are running Python 3.7.7, and call `python <your_file>.py`
 
-For Java, we are compiling your code by calling `javac <your_main_file>.java` and running `java <your_main_file>`
+For Java, we are using OpenJDK 11.0.7, we are compiling your code by calling `javac <your_main_file>.java` and running `java <your_main_file>`
 
-For C++, we compile your code with g++ by calling `g++` and compiling out to
+For C++, we compile your code with `g++` by calling `g++ -std=c++11 -O3 -o <you_main_file>.out <your_main_file>` and run `./<your_main_file>.out`
 
 ## Languages
 
