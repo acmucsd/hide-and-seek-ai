@@ -1,6 +1,34 @@
 import sys
 from enum import Enum
 
+def apply_direction(x, y, dir):
+    newx = x;
+    newy = y;
+    if (dir == 0):
+        newy -= 1
+    elif (dir == 1):
+        newy -= 1;
+        newx += 1;
+    elif (dir == 2):
+        newx += 1;
+    elif (dir ==3):
+        newx += 1;
+        newy += 1;
+    elif (dir == 4):
+        newy += 1;
+    elif (dir == 5):
+        newy += 1;
+        newx -= 1;
+    elif (dir == 6):
+        newx -= 1;
+    elif (dir == 7):
+        newx -= 1;
+        newy -= 1;
+    elif (dir == 8):
+        pass
+    
+    return (newx, newy)
+
 def read_input():
     """
     Reads input from stdin

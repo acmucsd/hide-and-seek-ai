@@ -126,7 +126,8 @@ public class Agent {
                 int id = Integer.parseInt(info[0]);
                 int x = Integer.parseInt(info[1]);
                 int y = Integer.parseInt(info[2]);
-                units.add(new Unit(id, x, y));
+                int dist = Integer.parseInt(info[3]);
+                units.add(new Unit(id, x, y, dist));
             }
         }
 
@@ -140,7 +141,7 @@ public class Agent {
                 int id = Integer.parseInt(info[0]);
                 int x = Integer.parseInt(info[1]);
                 int y = Integer.parseInt(info[2]);
-                opposingUnits.add(new Unit(id, x, y));
+                opposingUnits.add(new Unit(id, x, y, -1));
             }
         }
     }

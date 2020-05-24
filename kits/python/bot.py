@@ -1,4 +1,4 @@
-from kit import Agent, Team, Direction
+from kit import Agent, Team, Direction, apply_direction
 import math
 import random 
 import sys
@@ -29,7 +29,12 @@ while True:
 
              # choose a random direction to move in
             randomDirection = random.choice(list(Direction)).value
-            commands.append(unit.move(randomDirection))
+            (x, y) = apply_direction(unit.x, unit.y, randomDirection)
+            if (x < 0 or y < 0 or x >= len(game_map[0]) or y >= len(game_map)):
+                # we do nothing if the new position is not in the map
+                pass
+            else:
+                commands.append(unit.move(randomDirection))
         
     else:
         # hider code, which does nothing, sits tight and hopes it doesn't get 

@@ -10,7 +10,8 @@ let hideandseekdesign = new HideAndSeekDesign('HideAndSeek!', {
 let hideandseek = create(hideandseekdesign, {
   loggingLevel: Logger.LEVEL.WARN,
   activateStation: false,
-  observe: false
+  observe: false,
+  secureMode: true
 });
 
 let jskit = {file: './kits/js/bot.js', name: 'js-kit'};
