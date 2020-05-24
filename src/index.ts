@@ -129,7 +129,7 @@ export const defaultMatchConfigs: HideAndSeekConfigs = {
 export default class HideAndSeekDesign extends Design {
 
   constructor(name: string, options: DeepPartial<DesignOptions> = {}) {
-    let defaults = {
+    let defaults: DeepPartial<DesignOptions> = {
       engineOptions: {
         memory: {
           limit: 1024 * 1024 * 100
@@ -163,6 +163,7 @@ export default class HideAndSeekDesign extends Design {
     
     
     let configs = deepCopy(defaultMatchConfigs);
+
     configs.seed = Math.floor(Math.random()*1000000);
     configs = deepMerge(configs, match.configs);
     match.configs = configs;

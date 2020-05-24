@@ -78,6 +78,11 @@ else {
     loggingLevel: loglevel,
     activateStation: false,
     observe: false,
+    defaultMatchConfigs: {
+      agentOptions: {
+        runCommands: {'.py': ['python3']}
+      }
+    }
   });
   hideandseek.runMatch(
     [{ file: file1, name: file1}, { file: file2, name: file2} ], {
