@@ -4,11 +4,13 @@ Welcome to the Hide and Seek AI competition. This is the first ACM AI at UCSD pr
 
 It's like hide and seek and also tag. Your AI will need to be able to play as both the chaser and the hider. Your AI's objective as the seeker is to find the hiders and tag them. Your AI's objective as the hider is to dodge the seekers and hide from them.
 
-Read the [specs](#specs) for specific information on how to play and what the rules are
+Read the [specs](#specs) for specific information on how the competition works. Moreover, we are enforcing a set of [rules](#rules) we ask every competitor to abide by.
 
 Keep reading to see how to get started really quick and compete with your bots!
 
 Once you have a bot, make sure to go to ai.acmucsd.com/ to register an account and upload your bot there! Make sure to follow the upload instructions, and see [this](#submission) for help on how to zip your files correctly and upload them.
+
+If you have issues with writing a bot, uploading a bot, bugs in the engine, feel free to post the issue to this repository, we will get to them ASAP.
 
 ## Getting Started
 
@@ -71,7 +73,7 @@ The competition accepts only zip files. Make sure to follow the starter kit stru
 
 ### Linux / MacOSx
 
-On Mac, just select all files in the same folder as your `bot.js` file and right click and click compress and submit that. For the Bot Path field on the form, make sure to put in `bot.js` as the input. If your main file is called something else, put that instead in the Both Path field on the form.
+On Mac, just select all files in the same folder as your `bot.js` file and right click and click compress and submit that. For the Bot Path field on the submission form, make sure to put in `bot.js` as the input. If your main file is called something else, put that instead in the Both Path field on the form.
 
 To zip on the command line, navigate to the folder/directory with your mainfile `bot.js` or whatever name you have set it to, and run the following
 
@@ -83,7 +85,7 @@ Submit the bot.zip file and pass in `bot.js` or what your main file is named as 
 
 ### Windows
 
-Workng on it
+Select all files and folders in the folder containing your main file (e.g `bot.js`), right click, and click compress. Submit that and pass in your main file name e.g. `bot.js` as tthe Bot Path field on the submission form.
 
 ## How do we run your bots?
 
@@ -157,3 +159,13 @@ HideAndSeekDesign.watch('./replays/your_replay_file.json', 0.2);
 ```
 
 This will run the liveViewer shown earlier in your terminal at a speed of 0.2 seconds per frame (5 FPS)
+
+## Rules
+
+1. We Treat each other with respect. ACM is an all inclusive community. We accept and welcome people of all backgrounds and skill levels. Harassment, hate speech, and verbal abuse are STRICTLY prohibited and will result in an immediate ban from the competition.
+
+2. Any hacks, while encouraged to be sought out, **must not actually be performed**. We ask that you demonstrate it is possible, but to not actually perform said hack and you send the demonstration and code to us at ai@acmucsd.org. Moreover, you may not submit bots that perform the hack on the competition, we do not condone malicious activity. This includes but is not limited to, shutting down our servers, removing our files, reading other competitor's code etc.
+
+3. You are not allowed to open source your bot code until the conclusion of the competition as will be stated in this document and the website ai.acmucsd.com. You may talk about it with other competitors but we ask for the integrity of the competition that you don't share it.
+
+4. Have fun!
