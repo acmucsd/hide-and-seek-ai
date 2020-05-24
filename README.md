@@ -169,8 +169,10 @@ let hideandseek = Dimension.create(hideandseekdesign, {
   activateStation: false,
   observe: false,
   name: "Hide and Seek",
-  agentOptions: {
-    runCommands: {'.py': ['python3']}
+  defaultMatchConfigs: {
+    agentOptions: {
+      runCommands: {'.py': ['python3']}
+    }
   }
 });
 ```
