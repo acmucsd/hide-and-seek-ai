@@ -8,7 +8,7 @@ Read the [specs](#specs) for specific information on how the competition works. 
 
 Keep reading to see how to get started really quick and compete with your bots on https://ai.acmucsd.com/!
 
-Once you have a bot, make sure to go to ai.acmucsd.com/ to register an account and upload your bot there! Make sure to follow the upload instructions, and see [this](#submission) for help on how to zip your files correctly and upload them.
+Once you have a bot, make sure to go to https://ai.acmucsd.com/ to register an account and upload your bot there! Make sure to follow the upload instructions, and see [this](#submission) for help on how to zip your files correctly and upload them.
 
 If you have issues with writing a bot, uploading a bot, bugs in the engine, feel free to post the issue to this repository, we will get to them ASAP.
 
