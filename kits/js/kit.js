@@ -21,10 +21,11 @@ const Parser = require('./parser');
 const parse = new Parser(',');
 
 class Unit {
-  constructor(id, x, y) {
+  constructor(id, x, y, distance = undefined) {
     this.id = id;
     this.x = x;
     this.y = y;
+    this.distance = distance;
   }
   move(dir) {
     return `${this.id}_${dir}`;
@@ -86,7 +87,7 @@ class Agent {
     let units = [];
     unitIDsAndCoordinates.forEach((info) => {
       info = info.split("_");
-      let unit = new Unit(parseInt(info[0]), parseInt(info[1]), parseInt(info[2]));
+      let unit = new Unit(parseInt(info[0]), parseInt(info[1]), parseInt(info[2]), parseInt(info[3]));
       units.push(unit);
     });
     this.units = units;

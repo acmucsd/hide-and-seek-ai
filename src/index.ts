@@ -284,24 +284,30 @@ export default class HideAndSeekDesign extends Design {
       let team = state.agentIDToTeam.get(agentID);
       if (team === SEEKER) {
         let strs = [];
-        // send all seekers
+        // send all seekers and distances
 
         let seenHiderIDs: Set<number> = new Set();
         seekerIDs.forEach((id) => {
+          let closestDist = 9999999;
+
           let unit = state.gamemap.idMap.get(id);
           // send id and the units x y coords
-          strs.push(`${id}_${unit.x}_${unit.y}`);
+          
           // find which hiders this unit can see
           hiderIDs.forEach((hiderID) => {
+
+            let hiderUnit = state.gamemap.idMap.get(hiderID);
+            closestDist = Math.min(state.gamemap.distance(unit.x, unit.y, hiderUnit.x, hiderUnit.y), closestDist);
             // i know, this code is a little slow
             if (!seenHiderIDs.has(hiderID)) {
-              let hiderUnit = state.gamemap.idMap.get(hiderID);
+              
               let dist = state.gamemap.distance(unit.x, unit.y, hiderUnit.x, hiderUnit.y);
               if (dist <= match.configs.parameters.VISION_RANGE && !state.gamemap.sightBlocked(unit.x, unit.y, hiderUnit.x, hiderUnit.y)) {
                 seenHiderIDs.add(hiderID);
               }
             }
-          })
+          });
+          strs.push(`${id}_${unit.x}_${unit.y}_${closestDist}`);
         });
         await match.send(`${strs.join(',')}`, agentID); 
         
@@ -318,20 +324,25 @@ export default class HideAndSeekDesign extends Design {
         let strs = [];
         let seenSeekerIDs: Set<number> = new Set();
         hiderIDs.forEach((id) => {
+          let closestDist = 9999999;
           let unit = state.gamemap.idMap.get(id);
-          // send id and the units x y coords
-          strs.push(`${id}_${unit.x}_${unit.y}`);
+          
           // find which hiders this unit can see
           seekerIDs.forEach((seekerID) => {
+
+            let seekerUnit = state.gamemap.idMap.get(seekerID);
+            closestDist = Math.min(state.gamemap.distance(unit.x, unit.y, seekerUnit.x, seekerUnit.y), closestDist);
             // i know, this code is a little slow
             if (!seenSeekerIDs.has(seekerID)) {
-              let seekerUnit = state.gamemap.idMap.get(seekerID);
+              
               let dist = state.gamemap.distance(unit.x, unit.y, seekerUnit.x, seekerUnit.y);
               if (dist <= match.configs.parameters.VISION_RANGE && !state.gamemap.sightBlocked(unit.x, unit.y, seekerUnit.x, seekerUnit.y)) {
                 seenSeekerIDs.add(seekerID);
               }
             }
           })
+          // send id and the units x y coords and dist
+          strs.push(`${id}_${unit.x}_${unit.y}_${closestDist}`);
         });
         await match.send(`${strs.join(',')}`, agentID);
 
