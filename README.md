@@ -1,6 +1,6 @@
 # Hide and Seek AI Competition
 
-Welcome to the Hide and Seek AI competition. This is the first ACM AI at UCSD prototype so expect *many* bugs. So what is the game?
+Welcome to the Hide and Seek AI competition. This is the first ACM AI at UCSD prototype so expect *many* bugs but also lots of fun! So what is the game?
 
 It's like hide and seek and also tag. Your AI will need to be able to play as both the chaser and the hider. Your AI's objective as the seeker is to find the hiders and tag them. Your AI's objective as the hider is to dodge the seekers and hide from them.
 
@@ -8,59 +8,42 @@ Read the [specs](#specs) for specific information on how to play and what the ru
 
 Keep reading to see how to get started really quick and [run a match](#run-a-match) to test your bots!
 
+Once you have a bot, make sure to go to ai.acmucsd.com/ to register an account and upload your bot there! Make sure to follow the upload instructions.
+
 ## Getting Started
 
 First install all files necessary, run the following
 
 ```bash
-npm install dimensions-ai @acmucsd/hide-and-seek-ai
+npm install dimensions-ai
+npm install -g @acmucsd/hide-and-seek-ai
 ```
 
-Once that is done, create a file called `run.js` and add the following
+Now, you have access to the `hide-and-seek` command, which can be used to watch matches and run matches.
 
-```js
-const HideAndSeekDesign = require('@acmucsd/hide-and-seek-ai').default;
-const Dimension = require('dimensions-ai');
-let hideandseekdesign = new HideAndSeekDesign('hide-and-seek');
-let hideandseek = Dimension.create(hideandseekdesign, {
-  activateStation: false,
-  observe: false,
-  name: "Hide and Seek"
-});
+Download a starter kit of your choice from this repository. We will be using the JS kit as an example. Suppose in the same folder there is a kits folder with js bots in the directory `kits/js/bot.js` . To run a match, run the following
+
+```
+hide-and-seek kits/js/bot.js kits/js/bot.js --live=true
 ```
 
-This will initialize a `Dimension` through which you can run matches (and tournaments) by yourself.
+This will run the match live in your terminal. Set `--live=false` to make the match skip the live view and run as fast as possible.
 
-Keep reading to see how to run a single match
+Matches will create a replay file of the format of `match_<some long id>.json` in the replays folder. To watch the replay, run
 
-## Run a Match
-
-To run a match, you will first need some AI to run it. For now, we will just use the starter kit bots from `/starter-kits/js/` 
-
-Add the following code
-
-```js
-hideandseek.runMatch(['./pathtobot/bot.js', './pathtobot/bot.js'], {
-  delay: 0.2,
-  liveView: true,
-}).then((res) => {
-  console.log(res);
-});
+```
+hide-and-seek -w ./replays/match_<some long id>.json` --delay=0.2
 ```
 
-With `liveView` set to `true` as opposed to `false`, the match will run live on your terminal and you can watch it. Set it to `false` and it will run much faster but you will have to watch it through the replay file
+Set `--delay` to equal any number of seconds, representing the delay between each frame of the match. `0.2` for example represents 1/0.2 = 5 FPS.
 
-`delay: 0.2` sets the speed of the live viewer to 0.2 seconds per frame (5 FPS)
-
-### Watch Replays
-
-By default, replays are stored as `.json` files in the `replays/` folder. To watch a replay, run the following
-
-```js
-HideAndSeekDesign.watch('./replays/your_replay_file.json', 0.2);
+Run 
 ```
+hide-and-seek --help
+```
+for a full list of options.
 
-This will run the liveViewer shown earlier in your terminal at a speed of 0.2 seconds per frame (5 FPS)
+If you want to run and watch matches through the JS/TS API, see [this](#javascript-api)
 
 ## Specs
 
@@ -103,3 +86,51 @@ For C++, we compile your code with `g++` by calling `g++ -std=c++11 -O3 -o <you_
 ## Languages
 
 We support Javascript, Python, C, C++, Typescript, and Go. If you want another language and there enough demand for it, submit an issue here and we will add it.
+
+
+## Javascript API
+
+If you prefer to write code to run matches (and tournaments) instead of the command line method, keep reading!
+
+### Running a Match
+Create a file called `run.js` and add the following
+
+```js
+const HideAndSeekDesign = require('@acmucsd/hide-and-seek-ai').default;
+const Dimension = require('dimensions-ai');
+let hideandseekdesign = new HideAndSeekDesign('hide-and-seek');
+let hideandseek = Dimension.create(hideandseekdesign, {
+  activateStation: false,
+  observe: false,
+  name: "Hide and Seek"
+});
+```
+
+This will initialize a `Dimension` through which you can run matches (and tournaments) by yourself.
+
+To run a match, you will first need some AI to run it. For now, we will just use the starter kit bots from `kits/js/bot.js` 
+
+Add the following code
+
+```js
+hideandseek.runMatch(['./kits/js/bot.js', './kits/js/bot.js'], {
+  delay: 0.2,
+  liveView: true,
+}).then((res) => {
+  console.log(res);
+});
+```
+
+With `liveView` set to `true` as opposed to `false`, the match will run live on your terminal and you can watch it. Set it to `false` and it will run much faster but you will have to watch it through the replay file
+
+`delay: 0.2` sets the speed of the live viewer to 0.2 seconds per frame (5 FPS)
+
+### Watch Replays
+
+By default, replays are stored as `.json` files in the `replays/` folder. To watch a replay, run the following
+
+```js
+HideAndSeekDesign.watch('./replays/your_replay_file.json', 0.2);
+```
+
+This will run the liveViewer shown earlier in your terminal at a speed of 0.2 seconds per frame (5 FPS)
