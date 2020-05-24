@@ -1,4 +1,4 @@
-# Hide and Seek AI Competition
+# Hide and Seek AI Competition 🙈 🏃
 
 Welcome to the Hide and Seek AI competition. This is the first ACM AI at UCSD prototype so expect *many* bugs but also lots of fun! So what is the game?
 
@@ -6,7 +6,7 @@ It's like hide and seek and also tag. Your AI will need to be able to play as bo
 
 Read the [specs](#specs) for specific information on how the competition works. Moreover, we are enforcing a set of [rules](#rules) we ask every competitor to abide by.
 
-Keep reading to see how to get started really quick and compete with your bots on https://ai.acmucsd.com/!
+Keep reading to see how to get started really quick and compete with your bots on https://ai.acmucsd.com/
 
 Once you have a bot, make sure to go to https://ai.acmucsd.com/ to register an account and upload your bot there! Make sure to follow the upload instructions, and see [this](#submission) for help on how to zip your files correctly and upload them.
 
