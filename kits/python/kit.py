@@ -72,10 +72,10 @@ class Agent:
         self._update_map_with_ids()
 
     def _reset_map(self):
-        # add unit ids to map
+
         for _, unit in enumerate(self.units):
             self.map[unit.y][unit.x] = 0
-        # add unit ids to map
+
         for _, unit in enumerate(self.opposingUnits):
             self.map[unit.y][unit.x] = 0
 

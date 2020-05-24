@@ -128,7 +128,7 @@ export const defaultMatchConfigs: HideAndSeekConfigs = {
 
 export default class HideAndSeekDesign extends Design {
 
-  constructor(name: string, options: DeepPartial<DesignOptions>) {
+  constructor(name: string, options: DeepPartial<DesignOptions> = {}) {
     let defaults = {
       engineOptions: {
         memory: {
