@@ -10,7 +10,11 @@ Keep reading to see how to get started really quick and compete with your bots o
 
 Once you have a bot, make sure to go to https://ai.acmucsd.com/ to register an account and upload your bot there! Make sure to follow the upload instructions, and see [this](#submission) for help on how to zip your files correctly and upload them.
 
-If you have issues with writing a bot, uploading a bot, bugs in the engine, feel free to post the issue to this repository, we will get to them ASAP. NOTE, Windows is not supported, you have to use WSL, for installation instructions for WSL [go here](https://github.com/KNOXDEV/wsl) (thank you Aaron)
+If you have issues with writing a bot, uploading a bot, bugs in the engine, feel free to post the issue to this repository, we will get to them ASAP. There is also a [FAQ](#faq) section here for some commong bugs.
+
+NOTE, Windows is not supported, you have to use WSL, for installation instructions for WSL [go here](https://github.com/KNOXDEV/wsl) (thank you Aaron)
+
+NOTE, you need Python 3 and need to make `python` default to python3. See [this](#python-3) for help on how to do this correctly.
 
 ## Getting Started
 
@@ -25,10 +29,10 @@ npm install -g @acmucsd/hide-and-seek-ai
 
 Now, you have access to the `hide-and-seek` command, which can be used to watch matches and run matches.
 
-Download a starter kit of your choice from this repository. We will be using the JS kit as an example. Suppose in the same folder there is a kits folder with js bots in the directory `kits/js/bot.js` . To run a match, run the following
+Download a starter kit of your choice from this repository. We will be using the JS kit as an example. Suppose in the same folder there is a kits folder with js bots in the directory `./kits/js/bot.js` . To run a match, run the following
 
 ```
-hide-and-seek kits/js/bot.js kits/js/bot.js --live=true
+hide-and-seek ./kits/js/bot.js ./kits/js/bot.js --live=true
 ```
 
 This will run the match live in your terminal. Set `--live=false` to make the match skip the live view and run as fast as possible. Furthermore, ensure you have the correct tooling to run your bots. E.g. if you have a java bot, make sure `javac` works. See [this](#how-do-we-run-your-bots) for info on what tooling is required for each bot language.
@@ -111,6 +115,18 @@ Each bot has up to 1000ms of computation time, regardless of language. (Even the
 
 Furthermore, each bot is limited to 100MB of RAM. This should generally be more than enough memory. We will expand this as needed.
 
+
+## Rules
+
+1. We Treat each other with respect. ACM is an all inclusive community. We accept and welcome people of all backgrounds and skill levels. Harassment, hate speech, and verbal abuse are STRICTLY prohibited and will result in an immediate ban from the competition.
+
+2. Any hacks, while encouraged to be sought out, **must not actually be performed**. We ask that you demonstrate it is possible, but to not actually perform said hack and you send the demonstration and code to us at ai@acmucsd.org. Moreover, you may not submit bots that perform the hack on the competition, we do not condone malicious activity. This includes but is not limited to, shutting down our servers, removing our files, reading other competitor's code etc.
+
+3. You are not allowed to open source your bot code until the conclusion of the competition as will be stated in this document and the website ai.acmucsd.com. You may talk about it with other competitors but we ask for the integrity of the competition that you don't share it.
+
+4. Have fun!
+
+
 ## Languages
 
 We support Javascript, Python, C, C++, and Typescript. If you want another language and there enough demand for it, submit an issue here and we will add it.
@@ -188,12 +204,4 @@ HideAndSeekDesign.watch('./replays/your_replay_file.json', 0.2);
 
 This will run the liveViewer shown earlier in your terminal at a speed of 0.2 seconds per frame (5 FPS)
 
-## Rules
-
-1. We Treat each other with respect. ACM is an all inclusive community. We accept and welcome people of all backgrounds and skill levels. Harassment, hate speech, and verbal abuse are STRICTLY prohibited and will result in an immediate ban from the competition.
-
-2. Any hacks, while encouraged to be sought out, **must not actually be performed**. We ask that you demonstrate it is possible, but to not actually perform said hack and you send the demonstration and code to us at ai@acmucsd.org. Moreover, you may not submit bots that perform the hack on the competition, we do not condone malicious activity. This includes but is not limited to, shutting down our servers, removing our files, reading other competitor's code etc.
-
-3. You are not allowed to open source your bot code until the conclusion of the competition as will be stated in this document and the website ai.acmucsd.com. You may talk about it with other competitors but we ask for the integrity of the competition that you don't share it.
-
-4. Have fun!
+## FAQ
