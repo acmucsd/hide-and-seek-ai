@@ -207,4 +207,8 @@ HideAndSeekDesign.watch('./replays/your_replay_file.json', 0.2);
 
 This will run the liveViewer shown earlier in your terminal at a speed of 0.2 seconds per frame (5 FPS)
 
+### Known Quirks/Issues
+
+Java has known to be a little bit unstable, there are times when it might not communicate with the matchengine correctly and timeout. However, this is rare (once in 10,000 matches on the server)
+
 ## FAQ
