@@ -69,6 +69,10 @@ The green circle marks the vision range of unit #4. The red numbers are hiders, 
 
 The yellow squares are walls. Because of the **walls**, unit #4s line of sight is **blocked** and we have marked the tiles the unit cannot see with **red circles**. For example, the purple line shows the line of sight intersecting a yellow wall and thus being blocked from seeing one of the tiles. The line of sight is the line from the center of a tile to the center of a target tile, and if that line ever intersects a square tile that is a wall, the line of sight is considered to be blocked.
 
+Furthermore, the match engine also sends each unit the R^2 distance away they are from the nearest opposing unit, a bit of data that could help you hide and seek!
+
+Make sure to read the comments in the starter kit's main files such as `bot.js` `bot.cpp` etc. for information on what variables are available and what they mean. You can also check out the this [section](#bot-api) for documentation on the bot apis.
+
 ## Submission
 
 The competition accepts only zip files. Make sure to follow the starter kit structure provided in the [`kits`](https://github.com/acmucsd/hide-and-seek-ai/tree/master/kits) folder of this repository. Make sure to recursively zip your bot. Depending on your system, read the instructions for help on how to submit your bot
@@ -110,6 +114,10 @@ Furthermore, each bot is limited to 100MB of RAM. This should generally be more 
 ## Languages
 
 We support Javascript, Python, C, C++, and Typescript. If you want another language and there enough demand for it, submit an issue here and we will add it.
+
+## Bot API
+
+
 
 ## Setup 
 
