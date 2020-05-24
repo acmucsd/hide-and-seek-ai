@@ -14,8 +14,6 @@ If you have issues with writing a bot, uploading a bot, bugs in the engine, feel
 
 NOTE, Windows is not supported, you have to use WSL, for installation instructions for WSL [go here](https://github.com/KNOXDEV/wsl) (thank you Aaron)
 
-NOTE, you need Python 3 and need to make `python` default to python3. See [this](#python-3) for help on how to do this correctly.
-
 ## Getting Started
 
 First ensure you are running Node v12 or above and have npm installed. Check this by running `node -v` and `npm -v`. If you don't have them, see [this section](#setup) for setting up your environment to start running hide and seek games.
