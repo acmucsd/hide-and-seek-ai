@@ -13,7 +13,7 @@ yargs.options({
   },
   'supress': {
     describe: 'supress all logs',
-    default: false
+    default: 'false'
   },
   'delay': {
     describe: 'delay of replays',
@@ -21,6 +21,11 @@ yargs.options({
   },
   'live': {
     describe: 'live watch match on terminal',
+    default: 'true'
+  },
+  'maxtime': {
+    describe: 'max time per turn for the bot',
+    default: 1000
   }
 }).help()
 let argv = yargs.argv;
@@ -39,7 +44,7 @@ else {
   // take in two files
   let file1 = argv._[0];
   let file2 = argv._[1];
-  let maxtime = 750;
+  let maxtime = 1000;
   if (argv.maxtime) {
     maxtime = parseInt(<string>argv.maxtime);
     if (isNaN(maxtime)) {
@@ -71,13 +76,13 @@ else {
   });
   let hideandseek = Dimension.create(hideandseekdesign, {
     loggingLevel: loglevel,
-    activateStation: true,
-    observe: true,
+    activateStation: false,
+    observe: false,
   });
   hideandseek.runMatch(
-    [file1, file2], {
+    [{ file: file1, name: file1}, { file: file2, name: file2} ], {
       seed: seed,
-      liveView: argv.live
+      liveView: argv.live == 'true'
     }
   ).then((r) => console.log(r));
   
