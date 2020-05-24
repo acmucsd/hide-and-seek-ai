@@ -11,8 +11,8 @@ def read_input():
         raise SystemExit(eof)
       
 class Team(Enum):
-    SEEKER = 3
-    HIDER = 2
+    SEEKER = 2
+    HIDER = 3
 
 class Direction(Enum):
     NORTH = 0
@@ -26,10 +26,14 @@ class Direction(Enum):
     STILL = 8
 
 class Unit:
-    def __init__(self, id, x, y):
+    def __init__(self, id, x, y, dist):
         self.id = id
         self.x = x
         self.y = y
+        if (dist != -1):
+            self.dist = dist
+        else:
+            self.dist = None
 
     def move(self, dir: int) -> str:
         return "%d_%d" % (self.id, dir)
@@ -95,15 +99,16 @@ class Agent:
         self.units = []
         for _, val in enumerate(units_and_coords):
             if (val != ""):
-                [id, x, y] = [int(k) for k in val.split("_")]
-                self.units.append(Unit(id, x, y))
+                [id, x, y, dist] = [int(k) for k in val.split("_")]
+                self.units.append(Unit(id, x, y, dist))
 
         units_and_coords = read_input().split(",")
+        
         self.opposingUnits = []
         for _, value in enumerate(units_and_coords):
             if (value != ""):
-                [id, x, y] = [int(k) for k in val.split("_")]
-                self.opposingUnits.append(Unit(id, x, y))
+                [id, x, y] = [int(k) for k in value.split("_")]
+                self.opposingUnits.append(Unit(id, x, y, -1))
 
     """
     Updates Agent's own known state of `Match`
