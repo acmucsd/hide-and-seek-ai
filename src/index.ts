@@ -198,7 +198,6 @@ export default class HideAndSeekDesign extends Design {
       terminatedIDs: [],
       replay: null
     }
-    
 
     // create replay directory
     if (!fs.existsSync(match.configs.replayDirectory)) {
@@ -243,6 +242,7 @@ export default class HideAndSeekDesign extends Design {
       gamemap.ownedIDs.set(0, hiderSet);
     }
 
+
     for (let i = 0; i < match.agents.length; i++) {
       let agentID = match.agents[i].id;
       // sends the string `${agentID}` to the agent specified by agentID
@@ -280,6 +280,7 @@ export default class HideAndSeekDesign extends Design {
   private async sendSeekersAndHidersInformation(match: Match) {
     let state: MatchState = match.state;
     let { seekerIDs, hiderIDs } = this.getIDs(state.gamemap);
+
     for (let i = 0; i < match.agents.length; i++) {
       let agentID = match.agents[i].id;
       let team = state.agentIDToTeam.get(agentID);
@@ -434,7 +435,8 @@ export default class HideAndSeekDesign extends Design {
     let seekerLocationSet = new Set();
     seekerIDs.forEach((id) => {
       let unit = gamemap.idMap.get(id);
-      seekerLocationSet.add(gamemap.hashLoc(unit.x, unit.y));
+      let hash = gamemap.hashLoc(unit.x, unit.y);
+      seekerLocationSet.add(hash);
     })
 
     // capture hiders if they are tagged
@@ -445,9 +447,12 @@ export default class HideAndSeekDesign extends Design {
         let delta = MOVE_DELTAS[i];
         let nx = unit.x + delta[0];
         let ny = unit.y + delta[1];
-        let hash = gamemap.hashLoc(nx, ny);
-        if (seekerLocationSet.has(hash)) {
-          gamemap.removeHider(unit);
+        if (gamemap.inMap(nx, ny)) {
+
+          let hash = gamemap.hashLoc(nx, ny);
+          if (seekerLocationSet.has(hash)) {
+            gamemap.removeHider(unit);
+          }
         }
       }
     });
