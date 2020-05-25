@@ -1,8 +1,8 @@
 # Hide and Seek AI Competition 🙈 🏃
 
-Welcome to the Hide and Seek AI competition. This is the first ACM AI at UCSD prototype so expect *many* bugs but also lots of fun! So what is the game?
+Welcome to the Hide and Seek AI competition! This is the first ACM AI at UCSD prototype so expect *many* bugs but also lots of fun! So what is the game?
 
-It's like hide and seek and also tag. Your AI will need to be able to play as both the seeker and the hider. Your AI's objective as the seeker is to find the hiders and tag them. Your AI's objective as the hider is to dodge the seekers and hide from them.
+It's like hide and seek and also tag. Your AI will need to be able to play as both the seeker and the hider. Your AI's objective as the seeker is to find the hiders and tag them. Your AI's objective as the hider is to dodge the seekers and hide from them until the game ends.
 
 Read the [specs](#specs) for specific information on how the competition works. Moreover, we are enforcing a set of [rules](#rules) we ask every competitor to abide by.
 
@@ -48,6 +48,8 @@ Run
 hide-and-seek --help
 ```
 for a full list of options.
+
+Now you are ready to start developing your bot! Read the comments provided in the starter kits for information on what data is available and how to start developing a bot. You can also check out the [general API](#bot-api).
 
 If you want to run and watch matches through the JS/TS API, see [this](#javascript-api)
 
