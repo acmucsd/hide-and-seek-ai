@@ -13,15 +13,15 @@ let hideandseekdesign = new HideAndSeekDesign('HideAndSeek!', {
 
 let hideandseek = create(hideandseekdesign, {
   loggingLevel: Logger.LEVEL.WARN,
-  activateStation: true,
-  observe: true,
+  activateStation: false,
+  observe: false,
 });
 
 let randomBot = {file: './kits/js/bot.js', name: 'random'};
 let stillbot = {file: './test/bots/js/stillbot/bot.js', name:'still'};
-let chaseBot = {file: './test/bots/js/chasebot/bot.js', name: 'chaser'};
+let chaseBot = {file: './test/bots/js/benchmark/bench.js', name: 'bot1'};
 let badBot = {file: './test/bots/js/badbot/bot.js', name: 'badbot'};
-let botlist = [chaseBot, stillbot];
+let botlist = [chaseBot, chaseBot];
 // for (let i = 0; i < 2; i++) {
 
 //   botlist.push({file: './kits/js/bot.js', name: 'random_' + i});
@@ -29,8 +29,9 @@ let botlist = [chaseBot, stillbot];
 let bot = {file: './kits/js/bot.js', name: 'bot'};
 // seed 30 is bad
 hideandseek.runMatch(botlist, {
-  delay: 0.2,
+  delay: 0.12,
   liveView: true,
+  seed: 77222
 }).then((res) => {
   console.log(res);
 });
