@@ -216,3 +216,9 @@ Java has known to be a little bit unstable, there are times when it might not co
 If you can't install something, try `sudo npm install`. 
 
 If it says agent directory error when providing paths for running a match, try prepending the paths with `./`. Fixes bugs where you pass in something like `bot.py` or `bot.js` so you should instead run `hide-and-seek ./bot.py ./bot.js`.
+
+## Contributors
+
+Design: ACM AI
+
+Development: ACM AI
