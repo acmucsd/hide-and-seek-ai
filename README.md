@@ -109,7 +109,7 @@ For C++, we compile your code with `g++` by calling `g++ -std=c++11 -O3 -o <you_
 
 ### Computation Limits
 
-Each bot has up to 1000ms of computation time, regardless of language. (Even then, you can probably write a really good bot in python compared to one in C). This time is calculated as it runs on our Google Cloud Compute Engines (4 cpus, 4 GB RAM).
+Each bot has up to 1000ms of computation time, regardless of language. (Even then, you can probably write a really good bot in python compared to one in C). This time is calculated as it runs on our Google Cloud Compute Engine Instances (4 cpus, 4 GB RAM).
 
 Furthermore, each bot is limited to 100MB of RAM. This should generally be more than enough memory. We will expand this as needed.
 
