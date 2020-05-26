@@ -127,7 +127,7 @@ Furthermore, each bot is limited to 100MB of RAM. This should generally be more 
 
 ## Languages
 
-We support Javascript, Python, C, C++, and Typescript. If you want another language and there enough demand for it, submit an issue here and we will add it.
+We support Javascript, Python, C++, and Java. If you want another language and there enough demand for it, submit an issue here and we will add it.
 
 ## Bot API
 
