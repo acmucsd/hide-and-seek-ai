@@ -49,7 +49,7 @@ hide-and-seek --help
 ```
 for a full list of options.
 
-Now you are ready to start developing your bot! Read the comments provided in the starter kits for information on what data is available and how to start developing a bot. You can also check out the [general API](#bot-api).
+Now you are ready to start developing your bot! Read the comments provided in the starter kits for information on what data is available and how to start developing a bot. You can also check out the [general API](#bot-api). Furthermore, make sure to never print to standard out (other than your commands). To help debug, print to standard error instead.
 
 If you want to run and watch matches through the JS/TS API, see [this](#javascript-api)
 
@@ -132,6 +132,8 @@ We support Javascript, Python, C, C++, and Typescript. If you want another langu
 ## Bot API
 
 Because there are multiple languages possible, you will need to read the documentation in the starter kits for the exact syntax of the api.
+
+`agent.round_number` is the current round number.
 
 `agent.map` is a 2D dynamic array. `agent.map[y][x]` is the value at the coordinate `(x, y)`. It can have the following values
 - `0`: Represents an empty tile a unit can move on
