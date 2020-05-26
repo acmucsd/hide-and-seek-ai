@@ -2,7 +2,7 @@ const HideAndSeekDesign = require('@acmucsd/hide-and-seek-ai').default;
 const Dimension = require('dimensions-ai');
 require('dotenv').config()
 const { MongoDB, GCloudStorage, Logger } = Dimension;
-let hideandseekdesign = new HideAndSeekDesign('hide-and-seek-v1.6.0', {
+let hideandseekdesign = new HideAndSeekDesign('hide-and-seek-v1.9.3', {
   engineOptions: {
     noStdErr: true,
     timeout: {
@@ -10,7 +10,7 @@ let hideandseekdesign = new HideAndSeekDesign('hide-and-seek-v1.6.0', {
     },
     memory: {
       limit: 100000000, // ~ 100 mb
-      active: true // if we want this to be active, MAKE SURE TO CHANGE PIDUSAGE TO USE PS INSTEAD OF PROCFILE
+      active: true // if we want this to be active
     }
   }
 });
@@ -27,7 +27,7 @@ let hideandseek = Dimension.create(hideandseekdesign, {
 let mongo = new MongoDB(process.env.MONGO_STRING);
 let gcloudstorage = new GCloudStorage({
   projectId: "proto-code",
-  keyFilename: "./test/keys/proto-code-d5588dd59697.json"
+  keyFilename: "./keys/proto-code-d5588dd59697.json"
 });
 let promises = [];
 promises.push(hideandseek.use(mongo));
@@ -55,7 +55,7 @@ Promise.all(promises).then(() => {
     resultHandler: HideAndSeekDesign.trueskillResultHandler,
     id: 'a0Zlpa'
   });
-  tourney.run();
+  // tourney.run();
 })
 
 // cgroups

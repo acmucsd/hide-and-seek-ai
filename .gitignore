@@ -3,7 +3,7 @@ lib
 .log
 replays
 test/bots
-test/keys
+keys
 .env
 .DS_STORE
 __pycache__
