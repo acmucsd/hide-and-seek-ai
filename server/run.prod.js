@@ -10,7 +10,7 @@ let hideandseekdesign = new HideAndSeekDesign('hide-and-seek-v1.9.3', {
     },
     memory: {
       limit: 100000000, // ~ 100 mb
-      active: true // if we want this to be active
+      active: true
     }
   }
 });
