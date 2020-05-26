@@ -6,13 +6,13 @@ COPY ./server /app
 WORKDIR /app
 
 RUN bash ./setup.sh
-
+RUN bash ./config.sh
 
 # make api available
 EXPOSE 9000
 
-CMD ["pm2-runtime", "run.prod.js", "--time"]
+CMD ["pm2-runtime", "run.prod.js", "--output", "./logs/out.log", "--error", "./logs/err.log"]
 
 
 # Test run cmd:
-# docker run -p 9000:9000 stonezt2000/hide-and-seek-ai-backend
+# docker run --name test -p 9000:9000 stonezt2000/hide-and-seek-ai-backend

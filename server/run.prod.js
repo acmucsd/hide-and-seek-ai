@@ -42,7 +42,7 @@ Promise.all(promises).then(() => {
     defaultMatchConfigs: {
       randomizeSeeker: true,
       liveView: false,
-      loggingLevel: Dimension.Logger.LEVEL.INFO,
+      loggingLevel: Dimension.Logger.LEVEL.ERROR,
       storeReplayDirectory: 'hide_and_seek_tournament/replays',
       agentOptions: {
         runCommands: {'.py': ['python3']}
