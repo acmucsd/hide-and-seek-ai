@@ -1,6 +1,6 @@
 # Hide and Seek AI Competition 🙈 🏃
 
-Welcome to the Hide and Seek AI competition! This is the first ACM AI at UCSD prototype so expect *many* bugs but also lots of fun! So what is the game?
+Welcome to the Hide and Seek AI competition! This is ACM AI's first competition prototype so expect *many* bugs but also lots of fun! So what is the game?
 
 It's like hide and seek and also tag. Your AI will need to be able to play as both the seeker and the hider. Your AI's objective as the seeker is to find the hiders and tag them. Your AI's objective as the hider is to dodge the seekers and hide from them until the game ends.
 
@@ -10,7 +10,7 @@ Keep reading to see how to get started really quick and compete with your bots o
 
 Once you have a bot, make sure to go to https://ai.acmucsd.com/ to register an account and upload your bot there! Make sure to follow the upload instructions, and see [this](#submission) for help on how to zip your files correctly and upload them.
 
-If you have issues with writing a bot, uploading a bot, bugs in the engine, feel free to submit an issue to this repository, we will get to them ASAP. There is also a [FAQ](#faq) section here for some common bugs.
+If you have issues with writing a bot, uploading a bot, bugs in the engine, feel free to submit an issue to this repository or ping us in the #competitions channel on discord we will get to them ASAP. There is also a [FAQ](#faq) section here for some common bugs.
 
 NOTE, Windows is not supported, you have to use WSL, for installation instructions for WSL [go here](https://github.com/KNOXDEV/wsl) (thank you Aaron)
 
@@ -49,7 +49,7 @@ hide-and-seek --help
 ```
 for a full list of options.
 
-Now you are ready to start developing your bot! Read the comments provided in the starter kits for information on what data is available and how to start developing a bot. You can also check out the [general API](#bot-api).
+Now you are ready to start developing your bot! Read the comments provided in the starter kits for information on what data is available and how to start developing a bot. You can also check out the [general API](#bot-api). Furthermore, make sure to never print to standard out (other than your commands). To help debug, print to standard error instead.
 
 If you want to run and watch matches through the JS/TS API, see [this](#javascript-api)
 
@@ -79,7 +79,7 @@ Make sure to read the comments in the starter kit's main files such as `bot.js` 
 
 ## Submission
 
-The competition accepts only zip files. Make sure to follow the starter kit structure provided in the [`kits`](https://github.com/acmucsd/hide-and-seek-ai/tree/master/kits) folder of this repository. Make sure to recursively zip your bot. Depending on your system, read the instructions for help on how to submit your bot
+The competition accepts only zip files of up to a max of 200mb in size. Make sure to follow the starter kit structure provided in the [`kits`](https://github.com/acmucsd/hide-and-seek-ai/tree/master/kits) folder of this repository. Make sure to recursively zip your bot. Depending on your system, read the instructions for help on how to submit your bot
 
 ### Linux / MacOSx
 
@@ -127,11 +127,13 @@ Furthermore, each bot is limited to 100MB of RAM. This should generally be more 
 
 ## Languages
 
-We support Javascript, Python, C, C++, and Typescript. If you want another language and there enough demand for it, submit an issue here and we will add it.
+We support Javascript, Python, C++, and Java. If you want another language and there enough demand for it, submit an issue here and we will add it.
 
 ## Bot API
 
 Because there are multiple languages possible, you will need to read the documentation in the starter kits for the exact syntax of the api.
+
+`agent.round_number` is the current round number.
 
 `agent.map` is a 2D dynamic array. `agent.map[y][x]` is the value at the coordinate `(x, y)`. It can have the following values
 - `0`: Represents an empty tile a unit can move on
