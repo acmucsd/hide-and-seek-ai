@@ -79,7 +79,7 @@ Make sure to read the comments in the starter kit's main files such as `bot.js` 
 
 ## Submission
 
-The competition accepts only zip files. Make sure to follow the starter kit structure provided in the [`kits`](https://github.com/acmucsd/hide-and-seek-ai/tree/master/kits) folder of this repository. Make sure to recursively zip your bot. Depending on your system, read the instructions for help on how to submit your bot
+The competition accepts only zip files of up to a max of 200mb in size. Make sure to follow the starter kit structure provided in the [`kits`](https://github.com/acmucsd/hide-and-seek-ai/tree/master/kits) folder of this repository. Make sure to recursively zip your bot. Depending on your system, read the instructions for help on how to submit your bot
 
 ### Linux / MacOSx
 
