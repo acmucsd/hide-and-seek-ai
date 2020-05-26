@@ -10,7 +10,7 @@ Keep reading to see how to get started really quick and compete with your bots o
 
 Once you have a bot, make sure to go to https://ai.acmucsd.com/ to register an account and upload your bot there! Make sure to follow the upload instructions, and see [this](#submission) for help on how to zip your files correctly and upload them.
 
-If you have issues with writing a bot, uploading a bot, bugs in the engine, feel free to submit an issue to this repository, we will get to them ASAP. There is also a [FAQ](#faq) section here for some common bugs.
+If you have issues with writing a bot, uploading a bot, bugs in the engine, feel free to submit an issue to this repository or ping us in the #competitions channel on discord we will get to them ASAP. There is also a [FAQ](#faq) section here for some common bugs.
 
 NOTE, Windows is not supported, you have to use WSL, for installation instructions for WSL [go here](https://github.com/KNOXDEV/wsl) (thank you Aaron)
 
