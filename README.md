@@ -29,7 +29,10 @@ npm install -g @acmucsd/hide-and-seek-ai
 
 Now, you have access to the `hide-and-seek` command, which can be used to watch matches and run matches.
 
-Download a starter kit of your choice from this repository in the `kits` folder. We will be using the JS kit as an example. Suppose in the same folder there is a kits folder with js bots in the directory `./kits/js/bot.js`. The `bot.js` file is a main file, which every bot needs in the root directory of the bot. To run a match, run the following
+Download a starter kit of your choice from this repository in the `kits` folder or click the following to download kits for different languages. [C++](https://storage.cloud.google.com/hide_and_seek_olbptg/kits/cppstarter.zip), [Javascript](https://storage.cloud.google.com/hide_and_seek_olbptg/kits/jsstarter.zip), [Java](
+https://storage.cloud.google.com/hide_and_seek_olbptg/kits/javastarter.zip), [Python](https://storage.cloud.google.com/hide_and_seek_olbptg/kits/pystarter.zip)
+
+We will be using the JS kit as an example. Suppose in the same folder there is a kits folder with js bots in the directory `./kits/js/bot.js`. The `bot.js` file is a main file, which every bot needs in the root directory of the bot. To run a match, run the following
 
 ```
 hide-and-seek ./kits/js/bot.js ./kits/js/bot.js --live=true
