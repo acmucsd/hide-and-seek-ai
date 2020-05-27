@@ -43,7 +43,7 @@ This will run the match live in your terminal. Set `--live=false` to make the ma
 Matches will create a replay file of the format of `match_<some long id>.json` in the replays folder. To watch the replay, run
 
 ```
-hide-and-seek -w ./replays/match_<some long id>.json` --delay=0.2
+hide-and-seek -w ./replays/match_<some long id>.json --delay=0.2
 ```
 
 Set `--delay` to equal any number of seconds, representing the delay between each frame of the match. `0.2` for example represents 1/0.2 = 5 FPS.
