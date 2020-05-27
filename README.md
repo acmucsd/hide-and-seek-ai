@@ -6,7 +6,7 @@ Welcome to the Hide and Seek AI competition! This is ACM AI's first competition 
 
 It's like hide and seek and also tag. Your AI will need to be able to play as both the seeker and the hider. Your AI's objective as the seeker is to find the hiders and tag them. Your AI's objective as the hider is to dodge the seekers and hide from them until the game ends.
 
-Read the [specs](#specs) for specific information on how the competition works. You can compete by yourself or work with friends and submit one bot. Moreover, we are enforcing a set of [rules](#rules) we ask every competitor to abide by.
+Read the [specs](#specs) for specific information on how the competition works. You can compete by yourself or work with others and submit one bot. Moreover, we are enforcing a set of [rules](#rules) we ask every competitor to abide by.
 
 Keep reading to see how to get started really quick and compete with your bots on https://ai.acmucsd.com/. Remember that you don't need any machine learning to win (but you can do that if you want)
 
