@@ -24,7 +24,7 @@ First install all files necessary, run the following
 
 ```bash
 npm install dimensions-ai
-npm install -g @acmucsd/hide-and-seek-ai
+sudo npm install -g @acmucsd/hide-and-seek-ai
 ```
 
 Now, you have access to the `hide-and-seek` command, which can be used to watch matches and run matches.
