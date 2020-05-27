@@ -1,6 +1,6 @@
 # Hide and Seek AI Competition 🙈 🏃
 
-Welcome to the Hide and Seek AI competition! This is ACM AI's first competition prototype so expect *many* bugs but also lots of fun! So what is the game?
+Welcome to the Hide and Seek AI competition! This is ACM AI's first competition prototype so expect *many* bugs but also lots of fun! You can compete and submit as many bots as you like during the competition from May 26th to June 23rd, 11:59PM. Now what is the game?
 
 <img src="assets/hideandseek.gif" width="320" />
 
@@ -10,7 +10,7 @@ Read the [specs](#specs) for specific information on how the competition works. 
 
 Keep reading to see how to get started really quick and compete with your bots on https://ai.acmucsd.com/. Remember that you don't need any machine learning to win (but you can do that if you want)
 
-Once you have a bot, make sure to go to https://ai.acmucsd.com/ to register an account and upload your bot there! You can upload as many times as you want to see how it performs against other bots! Make sure to follow the upload instructions, and see [this](#submission) for help on how to zip your files correctly and upload them.
+Once you have a bot, make sure to go to https://ai.acmucsd.com/ to register an account and upload your bot there! You can upload as many times as you want to see how it performs against other bots! Make sure to follow the upload instructions, and see [this](#submission) for help on how to zip your files correctly and upload them. We will compute final rankings after the deadline June 23rd, 11:59 PM, by running a lot of matches.
 
 If you have issues with writing a bot, uploading a bot, bugs in the engine, feel free to submit an issue to this repository or ping us in the #competitions channel on discord we will get to them ASAP. There is also a [FAQ](#faq) section here for some common bugs.
 
