@@ -1,7 +1,8 @@
 # Hide and Seek AI Competition 🙈 🏃
 
 Welcome to the Hide and Seek AI competition! This is ACM AI's first competition prototype so expect *many* bugs but also lots of fun! So what is the game?
-<img src="assets/hideandseek.gif" style="zoom:50%;" />
+
+<img src="assets/hideandseek.gif" width="320" />
 
 It's like hide and seek and also tag. Your AI will need to be able to play as both the seeker and the hider. Your AI's objective as the seeker is to find the hiders and tag them. Your AI's objective as the hider is to dodge the seekers and hide from them until the game ends.
 
