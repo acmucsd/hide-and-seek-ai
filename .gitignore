@@ -7,3 +7,5 @@ keys
 .env
 .DS_STORE
 __pycache__
+*.out
+*.class

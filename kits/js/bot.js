@@ -11,7 +11,10 @@ const agent = new kit.Agent();
 agent.initialize().then(async () => {
   while(true) {
     let commands = [];
-    let map = agent.map;
+    let map = agent.map; // the map
+    let units = agent.units; // array of units you own
+    let opposingUnits = agent.opposingUnits; // array of units on other team you can see
+    let roundNumber = agent.roundNumber; // round number
     if (agent.team === SEEKER) {
       /** AI Code for seeker goes here */
       

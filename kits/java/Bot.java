@@ -9,8 +9,10 @@ public class Bot {
         
         while(true) {
             ArrayList<String> commands = new ArrayList<>();
-            ArrayList<Unit> units = agent.units;
-            int[][] map = agent.map;
+            ArrayList<Unit> units = agent.units; // list of units you own
+            ArrayList<Unit> opposingUnits = agent.opposingUnits; // list of units on other team that you can see
+            int round_number = agent.round_number; // round number
+            int[][] map = agent.map; // the map
 
             if (agent.team.equals(Team.SEEKER)) {
                 /** AI Code for seeker goes here */

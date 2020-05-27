@@ -117,7 +117,7 @@ class Agent {
     
     // get agent ID
     let meta = (await this.getLine()).nextIntArr();
-    this.round = 0;
+    this.roundNumber = 0;
     this.id = meta[0];
     this.team = meta[1]; // equals SEEKER=3 of HIDER=2
 
@@ -148,7 +148,7 @@ class Agent {
    */
   async update() {
 
-    this.round++;
+    this.roundNumber++;
     // reset map unit ids 
     this.units.forEach((unit) => {
       this.map[unit.y][unit.x] = 0;

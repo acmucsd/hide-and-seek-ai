@@ -12,9 +12,10 @@ agent.initialize()
 while True:
 
     commands = []
-    units = agent.units
-    opposingUnits = agent.opposingUnits
-    game_map = agent.map
+    units = agent.units # list of units you own
+    opposingUnits = agent.opposingUnits # list of units on other team that you can see
+    game_map = agent.map # the map
+    round_num = agent.round_num; # the round number
 
     
     if (agent.team == Team.SEEKER):

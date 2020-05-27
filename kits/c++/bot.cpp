@@ -8,8 +8,10 @@ int main() {
 
     while(true) {
         vector<string> commands;
-        auto map = agent.map;
-        auto units = agent.units;
+        auto map = agent.map; // the map
+        auto units = agent.units; // list of units you own
+        auto opposing_units = agent.opposing_units; // list of units on other team that you can see
+        auto round_number = agent.round_number; // round number
         if (agent.team == kit::SEEKER) {
             /** AI Code for seeker goes here */
 
