@@ -10,7 +10,7 @@ Read the [specs](#specs) for specific information on how the competition works. 
 
 Keep reading to see how to get started really quick and compete with your bots on https://ai.acmucsd.com/. Remember that you don't need any machine learning to win (but you can do that if you want)
 
-Once you have a bot, make sure to go to https://ai.acmucsd.com/ to register an account and upload your bot there! Make sure to follow the upload instructions, and see [this](#submission) for help on how to zip your files correctly and upload them.
+Once you have a bot, make sure to go to https://ai.acmucsd.com/ to register an account and upload your bot there! You can upload as many times as you want to see how it performs against other bots! Make sure to follow the upload instructions, and see [this](#submission) for help on how to zip your files correctly and upload them.
 
 If you have issues with writing a bot, uploading a bot, bugs in the engine, feel free to submit an issue to this repository or ping us in the #competitions channel on discord we will get to them ASAP. There is also a [FAQ](#faq) section here for some common bugs.
 
