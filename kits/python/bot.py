@@ -15,7 +15,7 @@ while True:
     units = agent.units # list of units you own
     opposingUnits = agent.opposingUnits # list of units on other team that you can see
     game_map = agent.map # the map
-    round_num = agent.round_num; # the round number
+    round_num = agent.round_num # the round number
 
     
     if (agent.team == Team.SEEKER):

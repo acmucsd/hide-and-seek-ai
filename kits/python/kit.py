@@ -2,28 +2,28 @@ import sys
 from enum import Enum
 
 def apply_direction(x, y, dir):
-    newx = x;
-    newy = y;
+    newx = x
+    newy = y
     if (dir == 0):
         newy -= 1
     elif (dir == 1):
-        newy -= 1;
-        newx += 1;
+        newy -= 1
+        newx += 1
     elif (dir == 2):
-        newx += 1;
+        newx += 1
     elif (dir ==3):
-        newx += 1;
-        newy += 1;
+        newx += 1
+        newy += 1
     elif (dir == 4):
-        newy += 1;
+        newy += 1
     elif (dir == 5):
-        newy += 1;
-        newx -= 1;
+        newy += 1
+        newx -= 1
     elif (dir == 6):
-        newx -= 1;
+        newx -= 1
     elif (dir == 7):
-        newx -= 1;
-        newy -= 1;
+        newx -= 1
+        newy -= 1
     elif (dir == 8):
         pass
     
@@ -58,7 +58,7 @@ class Unit:
         self.id = id
         self.x = x
         self.y = y
-        self.distance = dist;
+        self.distance = dist
 
     def move(self, dir: int) -> str:
         return "%d_%d" % (self.id, dir)
@@ -82,7 +82,7 @@ class Agent:
         self.id = int(meta[0])
         self.team = Team(int(meta[1]))
 
-        self._store_unit_info();
+        self._store_unit_info()
         
 
         [width, height] = [int(i) for i in (read_input().split(","))]
