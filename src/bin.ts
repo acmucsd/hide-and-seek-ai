@@ -2,6 +2,7 @@
 import HideAndSeekDesign from '.';
 import * as Dimension from 'dimensions-ai';
 import yargs from 'yargs';
+import { MatchDestroyedError } from 'dimensions-ai/lib/DimensionError';
 yargs.options({
   'watch': {
     alias: 'w',
@@ -75,7 +76,7 @@ else {
     }
   });
   let hideandseek = Dimension.create(hideandseekdesign, {
-    loggingLevel: loglevel,
+    loggingLevel: Dimension.Logger.LEVEL.NONE,
     activateStation: false,
     observe: false,
     defaultMatchConfigs: {
@@ -89,7 +90,14 @@ else {
       seed: seed,
       liveView: argv.live == 'true'
     }
-  ).then((r) => console.log(r));
+  ).then((r) => console.log(r)).catch((err) => {
+    if (err instanceof MatchDestroyedError) {
+      // ignore;
+    }
+    else {
+      throw err;
+    }
+  })
   
 }
 // let delay = parseFloat(process.argv[3]);
