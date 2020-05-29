@@ -1,6 +1,5 @@
 import HideAndSeekDesign from '../src';
 import { create, Logger } from 'dimensions-ai';
-import { Dimension } from 'dimensions-ai/lib/Dimension';
 
 let hideandseekdesign = new HideAndSeekDesign('HideAndSeek!', {
   engineOptions: {
@@ -14,7 +13,7 @@ let hideandseekdesign = new HideAndSeekDesign('HideAndSeek!', {
 let hideandseek = create(hideandseekdesign, {
   loggingLevel: Logger.LEVEL.WARN,
   activateStation: false,
-  observe: false,
+  observe: false
 });
 
 let randomBot = {file: './kits/js/bot.js', name: 'random'};
@@ -30,7 +29,7 @@ let bot = {file: './kits/js/bot.js', name: 'bot'};
 // seed 30 is bad
 hideandseek.runMatch(botlist, {
   delay: 0.12,
-  liveView: true,
+  liveView: false,
   seed: 77222
 }).then((res) => {
   console.log(res);

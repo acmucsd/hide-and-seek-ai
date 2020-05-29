@@ -19,6 +19,3 @@ a2enmod proxy
 a2enmod proxy_http
 a2enmod proxy_balancer
 a2enmod lbmethod_byrequests
-
-# restart
-service apache2 restart

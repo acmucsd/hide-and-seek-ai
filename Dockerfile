@@ -10,8 +10,8 @@ RUN bash ./config.sh
 
 # make api available
 EXPOSE 9000
-
-CMD ["pm2-runtime", "run.prod.js", "--output", "./logs/out.log", "--error", "./logs/err.log"]
+RUN chmod +x ./entrypoint.sh
+CMD ["/bin/bash", "./entrypoint.sh"]
 
 
 # Test run cmd:
