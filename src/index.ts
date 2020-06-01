@@ -162,6 +162,7 @@ export default class HideAndSeekDesign extends Design {
   async initialize(match: Match) {
     
     
+    
     let configs = deepCopy(defaultMatchConfigs);
 
     configs.seed = Math.floor(Math.random()*1000000);
@@ -240,6 +241,23 @@ export default class HideAndSeekDesign extends Design {
       state.teamToAgentID.set(HIDER, 0);
       gamemap.ownedIDs.set(1, seekerSet);
       gamemap.ownedIDs.set(0, hiderSet);
+    }
+
+    // check aliveness of each agent
+    let terminatedIDs = [];
+    match.agents.forEach((agent) => {
+      if (agent.isTerminated()) {
+        terminatedIDs.push(agent.id);
+      }
+    });
+
+    // if any bot was terminated, we finish the match and save what we have so far
+    if (terminatedIDs.length > 0) {
+      state.terminatedIDs = terminatedIDs;
+      if (match.configs.storeReplay) {
+        state.replay.writeOut();
+      }
+      return;
     }
 
 
@@ -556,6 +574,7 @@ export default class HideAndSeekDesign extends Design {
         else {
           this.setResult(result, 0, 1, match);
         }
+        return result;
       }
     }
     let { seekerIDs, hiderIDs } = this.getIDs(state.gamemap);

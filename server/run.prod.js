@@ -2,7 +2,7 @@ const HideAndSeekDesign = require('@acmucsd/hide-and-seek-ai').default;
 const Dimension = require('dimensions-ai');
 require('dotenv').config()
 const { MongoDB, GCloudStorage, Logger } = Dimension;
-let hideandseekdesign = new HideAndSeekDesign('hide-and-seek-v1.9.5', {
+let hideandseekdesign = new HideAndSeekDesign('hide-and-seek-v1.9.6', {
   engineOptions: {
     noStdErr: true,
     timeout: {
@@ -21,7 +21,7 @@ let hideandseek = Dimension.create(hideandseekdesign, {
   observe: true,
   secureMode: true,
   id: "oLBptg",
-  name: "Hide and Seek Docker"
+  name: "Hide and Seek"
 });
 
 let mongo = new MongoDB(process.env.MONGO_STRING);
@@ -43,7 +43,7 @@ Promise.all(promises).then(() => {
       randomizeSeeker: true,
       liveView: false,
       loggingLevel: Dimension.Logger.LEVEL.ERROR,
-      storeReplayDirectory: 'hide_and_seek_docker_tournament/replays',
+      storeReplayDirectory: 'hide_and_seek_official_tournament/replays',
       agentOptions: {
         runCommands: {'.py': ['python3']}
       }

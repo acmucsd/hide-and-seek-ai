@@ -10,7 +10,7 @@ npm install dimensions-ai
 pm2 install pm2-logrotate
 
 # install tooling
-apt install sudo
+apt install sudo -y
 apt-get install -y g++
 apt-get -y install default-jdk
 apt-get install apache2 -y

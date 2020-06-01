@@ -2,10 +2,11 @@ FROM python:3.7
 FROM node:12.16.3
 
 RUN mkdir /app
-COPY ./server /app
+COPY ./server/setup.sh /app
 WORKDIR /app
 
 RUN bash ./setup.sh
+COPY ./server/ ./
 RUN bash ./config.sh
 
 # make api available
