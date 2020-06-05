@@ -16,11 +16,12 @@ let hideandseek = create(hideandseekdesign, {
   observe: false,
 });
 
-let jskit = {file: './kits/python/bot.py', name: 'py-kit'};
+let pykit = {file: './kits/python/bot.py', name: 'py-kit'};
+let jskit = {file: './kits/js/bot.js', name: 'js-kit'};
 
-hideandseek.runMatch([jskit, jskit], {
+hideandseek.runMatch([jskit, pykit], {
   delay: 0.2,
-  liveView: true,
+  liveView: false,
   seed: 32
 }).then((res) => {
   console.log(res);
