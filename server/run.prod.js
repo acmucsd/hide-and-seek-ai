@@ -2,7 +2,7 @@ const HideAndSeekDesign = require('@acmucsd/hide-and-seek-ai').default;
 const Dimension = require('dimensions-ai');
 require('dotenv').config()
 const { MongoDB, GCloudStorage, Logger } = Dimension;
-let hideandseekdesign = new HideAndSeekDesign('hide-and-seek-v1.9.7', {
+let hideandseekdesign = new HideAndSeekDesign('hide-and-seek-v1.9.8', {
   engineOptions: {
     noStdErr: true,
     timeout: {
