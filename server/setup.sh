@@ -3,8 +3,8 @@ apt-get update
 
 # install core files needed by server
 npm install pm2 -g
-npm install @acmucsd/hide-and-seek-ai@1.9.9
-npm install dimensions-ai@3.1.3
+npm install @acmucsd/hide-and-seek-ai@1.9.10
+npm install dimensions-ai@3.1.5
 
 # setup node related configs
 pm2 install pm2-logrotate
