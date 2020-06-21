@@ -76,7 +76,7 @@ else {
     }
   });
   let hideandseek = Dimension.create(hideandseekdesign, {
-    loggingLevel: Dimension.Logger.LEVEL.NONE,
+    loggingLevel: loglevel,
     activateStation: false,
     observe: false,
     defaultMatchConfigs: {
