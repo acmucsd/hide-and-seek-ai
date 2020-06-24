@@ -106,7 +106,7 @@ Select all files and folders in the folder containing your main file (e.g `bot.j
 
 For JS, we are running NodeJS v12, and call `node <your_file>.js`
 
-For Python, we are running Python 3.7.7, and call `python <your_file>.py`
+For Python, we are running Python 3.5.3, and call `python <your_file>.py`
 
 For Java, we are using OpenJDK 11.0.7, we are compiling your code by calling `javac <your_main_file>.java` and running `java <your_main_file>`
 
