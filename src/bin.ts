@@ -97,7 +97,9 @@ else {
     else {
       throw err;
     }
-  })
+  }).catch((err) => {
+    console.error(err)
+  });
   
 }
 // let delay = parseFloat(process.argv[3]);

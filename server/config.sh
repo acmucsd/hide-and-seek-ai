@@ -6,6 +6,8 @@ mkdir logs
 # security
 useradd dimensions_bot
 chsh dimensions_bot -s /bin/rbash
+mkdir /home/dimensions_bot
+chown -R dimensions_bot /home/dimensions_bot
 
 # run the startup script to setup apache
 
