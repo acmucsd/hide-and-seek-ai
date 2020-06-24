@@ -17,9 +17,6 @@ apt-get install apache2 -y
 apt-get -y install python3-pip
 apt-get clean;
 
-# install python packages
-sudo -H -u dimensions_bot pip3 install --user numpy scipy
-
 
 
 

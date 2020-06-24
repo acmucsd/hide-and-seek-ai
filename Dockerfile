@@ -9,6 +9,8 @@ RUN bash ./setup.sh
 COPY ./server/ ./
 RUN bash ./config.sh
 
+RUN bash ./download-packages.sh
+
 # make api available
 EXPOSE 9000
 RUN chmod +x ./entrypoint.sh
