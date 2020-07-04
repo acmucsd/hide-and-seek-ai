@@ -11,6 +11,8 @@ RUN bash ./config.sh
 
 RUN bash ./download-packages.sh
 
+RUN mkdir hide_and_seek_official_tournament
+
 # make api available
 EXPOSE 9000
 RUN chmod +x ./entrypoint.sh
