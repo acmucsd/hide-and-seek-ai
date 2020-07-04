@@ -15,7 +15,3 @@ RUN bash ./download-packages.sh
 EXPOSE 9000
 RUN chmod +x ./entrypoint.sh
 CMD ["/bin/bash", "./entrypoint.sh"]
-
-
-# Test run cmd:
-# docker run --name test -p 9000:9000 stonezt2000/hide-and-seek-ai-backend

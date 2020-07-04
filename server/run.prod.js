@@ -4,12 +4,12 @@ require('dotenv').config()
 const { MongoDB, GCloudStorage, Logger } = Dimension;
 let hideandseekdesign = new HideAndSeekDesign('hide-and-seek-v1.9.10', {
   engineOptions: {
-    noStdErr: true,
+    noStdErr: false,
     timeout: {
-      max: 1000
+      max: 1000 + 100
     },
     memory: {
-      limit: 100000000, // ~ 100 mb
+      limit: 200000000, // ~ 200 mb
       active: true
     }
   }
@@ -44,9 +44,10 @@ Promise.all(promises).then(() => {
       liveView: false,
       loggingLevel: Dimension.Logger.LEVEL.ERROR,
       storeReplayDirectory: 'hide_and_seek_official_tournament/replays',
+      storeErrorDirectory: 'hide_and_seek_official_tournament/errorlogs',
       agentOptions: {
         runCommands: {'.py': ['python3']}
-      }
+      },
     },
     agentsPerMatch: [2],
     tournamentConfigs: {

@@ -27,6 +27,10 @@ yargs.options({
   'maxtime': {
     describe: 'max time per turn for the bot',
     default: 1000
+  },
+  'storelogs': {
+    describe: 'whether to store error logs as files',
+    default: 'true'
   }
 }).help()
 let argv = yargs.argv;
@@ -56,6 +60,12 @@ else {
   if (argv.suppress) {
     loglevel = Dimension.Logger.LEVEL.NONE;
   }
+
+  let storelogs = true;
+  if (argv.storelogs === 'false') {
+    storelogs = false;
+  }
+
   if (argv.log) {
     loglevel = parseInt(<string>argv.log);
     if (isNaN(loglevel)) {
@@ -82,7 +92,8 @@ else {
     defaultMatchConfigs: {
       agentOptions: {
         runCommands: {'.py': ['python3']}
-      }
+      },
+      storeErrorLogs: storelogs
     }
   });
   hideandseek.runMatch(
