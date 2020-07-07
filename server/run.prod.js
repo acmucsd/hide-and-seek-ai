@@ -2,7 +2,7 @@ const HideAndSeekDesign = require('@acmucsd/hide-and-seek-ai').default;
 const Dimension = require('dimensions-ai');
 require('dotenv').config()
 const { MongoDB, GCloudStorage, Logger } = Dimension;
-let hideandseekdesign = new HideAndSeekDesign('hide-and-seek-v1.9.10', {
+let hideandseekdesign = new HideAndSeekDesign('hide-and-seek-v1.9.14', {
   engineOptions: {
     noStdErr: false,
     timeout: {
@@ -21,7 +21,10 @@ let hideandseek = Dimension.create(hideandseekdesign, {
   observe: true,
   secureMode: true,
   id: "oLBptg",
-  name: "Hide and Seek"
+  name: "Hide and Seek",
+  stationConfigs: {
+    disableUploads: true
+  }
 });
 
 let mongo = new MongoDB(process.env.MONGO_STRING);
