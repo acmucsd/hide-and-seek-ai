@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "colors": "^1.4.0",
-    "dimensions-ai": "^3.2.2",
+    "dimensions-ai": "^3.2.3",
     "seedrandom": "^3.0.5",
     "yargs": "^15.3.1"
   },
