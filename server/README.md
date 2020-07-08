@@ -12,6 +12,8 @@ docker tag hide-and-seek-ai-docker gcr.io/proto-code/hide-and-seek-ai-docker:lat
 docker push gcr.io/proto-code/hide-and-seek-ai-docker:latest
 ```
 
+Then restart instances (no need to replace)
+
 Test with
 ```bash
 docker run --name test hide-and-seek-ai-docker 
