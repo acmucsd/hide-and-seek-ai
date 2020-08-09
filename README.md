@@ -1,6 +1,6 @@
 # Hide and Seek AI Competition 🙈 🏃
 
-Welcome to the Hide and Seek AI competition! This is ACM AI's first competition prototype so expect *many* bugs but also lots of fun! You can compete and submit as many bots as you like during the competition from May 26th to July 6th, 11:59PM. Now what is the game?
+Welcome to the Hide and Seek AI competition! This is ACM AI's first competition prototype so expect *many* bugs but also lots of fun! The competition ran from May 26th to July 6th, 11:59PM and the final results are [https://ai.acmucsd.com/history/hide-and-seek2020](here). Now what is the game?
 
 <img src="assets/hideandseek.gif" width="320" />
 
